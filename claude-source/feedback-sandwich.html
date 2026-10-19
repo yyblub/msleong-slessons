@@ -1,0 +1,843 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Feedback Sandwich</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+/* Layout: two columns on wide screens — a sticky sandwich that builds up on the left, the current step on the right; stacks to one column on phones */
+:root {
+  --paper: #F4F6F2;
+  --card: #FFFFFF;
+  --ink: #1E2230;
+  --muted: #586074;
+  --line: #D6DAE2;
+  --accent: #2D4BD1;
+  --accent-soft: #E6EAFB;
+  --accent-ink: #FFFFFF;
+  --bun: #E8AE48;
+  --bun-edge: #B97E1F;
+  --leaf: #5DA56A;
+  --leaf-edge: #3D7A49;
+  --tomato: #D9574A;
+  --on-food: #2A1B05;
+  --warn-bg: #FFF3D1;
+  --warn: #6E4B00;
+  --kind-bg: #FCE6E6;
+  --kind: #8E2A2A;
+  --good: #2E7743;
+  --c-red: #E2483D; --c-orange: #F08A2C; --c-yellow: #F5C631;
+  --c-green: #4BA35A; --c-blue: #3A6FD8; --c-purple: #8A4FC4;
+  --display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
+  --body: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #13151C; --card: #1C1F29; --ink: #ECEEF3; --muted: #A2A9BA; --line: #2F3442;
+    --accent: #93A5FF; --accent-soft: #232A4A; --accent-ink: #0F1324;
+    --warn-bg: #3A2F12; --warn: #F2D489; --kind-bg: #3B1D20; --kind: #F3AAAA; --good: #82D59C;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #13151C; --card: #1C1F29; --ink: #ECEEF3; --muted: #A2A9BA; --line: #2F3442;
+  --accent: #93A5FF; --accent-soft: #232A4A; --accent-ink: #0F1324;
+  --warn-bg: #3A2F12; --warn: #F2D489; --kind-bg: #3B1D20; --kind: #F3AAAA; --good: #82D59C;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 48px;
+}
+.wrap { max-width: 1040px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+
+header { display: flex; flex-direction: column; gap: 6px; }
+.eyebrow { font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+h1 { font-family: var(--display); font-weight: 800; font-size: clamp(2rem, 6vw, 3.1rem); line-height: 1.02; margin: 0; letter-spacing: -0.02em; text-wrap: balance; }
+.lede { margin: 0; color: var(--muted); max-width: 60ch; }
+
+.layout { display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 32px; align-items: start; }
+@media (max-width: 760px) { .layout { grid-template-columns: minmax(0, 1fr); gap: 20px; } }
+
+/* ---------- the sandwich ---------- */
+.stack { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); display: flex; flex-direction: column; gap: 6px; }
+@media (max-width: 760px) { .stack { position: static; flex-direction: row; gap: 6px; } }
+.layer {
+  font: inherit; text-align: left; color: var(--muted);
+  border: 2px dashed var(--line); background: transparent;
+  padding: 14px 16px; display: flex; flex-direction: column; gap: 2px;
+  transition: background-color .35s ease, border-color .35s ease, transform .35s ease;
+  min-width: 0;
+}
+.layer .lname { font-family: var(--display); font-weight: 800; font-size: 1.05rem; color: inherit; }
+.layer .lsub { font-size: 0.86rem; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.layer.top { border-radius: 90px 90px 14px 14px; padding-top: 22px; min-height: 92px; }
+.layer.mid { border-radius: 14px; min-height: 78px; }
+.layer.bot { border-radius: 14px 14px 40px 40px; min-height: 76px; }
+.layer.current { border-color: var(--accent); color: var(--ink); }
+.layer.done { color: var(--on-food); border-style: solid; }
+.layer.top.done {
+  background-color: var(--bun); border-color: var(--bun-edge);
+  background-image:
+    radial-gradient(ellipse 4px 2.5px at 22% 30%, #FFF2D6 98%, transparent),
+    radial-gradient(ellipse 4px 2.5px at 46% 18%, #FFF2D6 98%, transparent),
+    radial-gradient(ellipse 4px 2.5px at 70% 28%, #FFF2D6 98%, transparent),
+    radial-gradient(ellipse 4px 2.5px at 58% 40%, #FFF2D6 98%, transparent);
+}
+.layer.mid.done {
+  background: linear-gradient(var(--tomato) 0 7px, var(--leaf) 7px);
+  border-color: var(--leaf-edge); padding-top: 18px;
+}
+.layer.bot.done { background-color: var(--bun); border-color: var(--bun-edge); }
+.layer.clickable { cursor: pointer; }
+.layer.clickable:hover { transform: translateX(3px); }
+@media (max-width: 760px) {
+  .stack .layer { flex: 1 1 0; min-height: 64px; padding: 10px 10px; }
+  .layer.top { border-radius: 40px 40px 10px 10px; padding-top: 14px; }
+  .layer.bot { border-radius: 10px 10px 24px 24px; }
+  .layer .lsub { display: none; }
+  .layer .lname { font-size: 0.9rem; }
+  .layer.clickable:hover { transform: none; }
+}
+.stack-note { font-size: 0.82rem; color: var(--muted); margin: 6px 2px 0; }
+@media (max-width: 760px) { .stack-note { display: none; } }
+
+/* ---------- step panel ---------- */
+.panel { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: clamp(18px, 4vw, 30px); display: flex; flex-direction: column; gap: 22px; min-width: 0; }
+.step { display: flex; flex-direction: column; gap: 18px; }
+.stepno { font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+h2 { font-family: var(--display); font-weight: 800; font-size: clamp(1.45rem, 4vw, 1.9rem); line-height: 1.1; margin: 0; text-wrap: balance; }
+h3 { font-family: var(--display); font-weight: 600; font-size: 1.12rem; margin: 0; }
+.hint { margin: 0; color: var(--muted); max-width: 62ch; }
+.block { display: flex; flex-direction: column; gap: 10px; }
+
+label.field { font-weight: 700; }
+input[type="text"], textarea, select {
+  font: inherit; color: var(--ink); background: var(--paper);
+  border: 1.5px solid var(--line); border-radius: 12px; padding: 12px 14px; width: 100%;
+}
+textarea { min-height: 112px; resize: vertical; }
+input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-visible, a.btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+.group-label { font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  font: inherit; font-size: 0.95rem; cursor: pointer;
+  border: 1.5px solid var(--line); background: var(--card); color: var(--ink);
+  border-radius: 999px; padding: 7px 14px;
+}
+.chip:hover { border-color: var(--accent); }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+
+.guide { background: var(--accent-soft); border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px; }
+.guide .meaning { margin: 0; font-style: italic; color: var(--muted); }
+.guide-item { display: flex; flex-direction: column; gap: 8px; }
+.guide-item + .guide-item { border-top: 1px solid var(--line); padding-top: 16px; margin-top: 8px; }
+.fixes .group-label { margin-top: 6px; }
+.guide ul { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 4px; }
+
+.starters { display: flex; flex-wrap: wrap; gap: 8px; }
+.starter {
+  font: inherit; font-size: 0.9rem; font-style: italic; cursor: pointer; text-align: left;
+  background: transparent; color: var(--ink);
+  border: 1.5px dashed var(--line); border-radius: 10px; padding: 6px 10px;
+}
+.starter:hover { border-color: var(--accent); }
+
+.fixes { display: flex; flex-direction: column; gap: 8px; }
+.fix {
+  display: flex; gap: 12px; align-items: flex-start; cursor: pointer;
+  border: 1.5px solid var(--line); border-radius: 12px; padding: 12px 14px;
+}
+.fix:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+.fix input { margin-top: 5px; accent-color: var(--accent); }
+.fix .own { display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0; }
+
+.msg { border-radius: 12px; padding: 12px 14px; margin: 0; }
+.msg.warn { background: var(--warn-bg); color: var(--warn); }
+.msg.kind { background: var(--kind-bg); color: var(--kind); }
+.msg .eg { display: block; margin-top: 6px; }
+
+.actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; }
+.btn {
+  font: inherit; font-weight: 700; cursor: pointer; border-radius: 999px; padding: 11px 22px;
+  border: 1.5px solid var(--accent); background: var(--accent); color: var(--accent-ink);
+}
+.btn.ghost { background: transparent; color: var(--accent); }
+.btn.small { padding: 7px 14px; font-size: 0.92rem; }
+
+.final {
+  white-space: pre-wrap; margin: 0; font-family: var(--body); font-size: 1.02rem;
+  background: var(--paper); border: 1.5px solid var(--line); border-radius: 14px; padding: 16px 18px;
+  overflow-wrap: anywhere;
+}
+.check { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.check li { display: flex; gap: 10px; }
+.check input { margin-top: 5px; accent-color: var(--good); }
+.copied { color: var(--good); font-weight: 700; }
+.edit-row { display: flex; flex-wrap: wrap; gap: 8px; }
+
+details.glossary { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 16px 20px; }
+details.glossary summary { cursor: pointer; font-family: var(--display); font-weight: 600; font-size: 1.1rem; }
+.gloss-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px 28px; margin-top: 14px; }
+
+footer { font-size: 0.85rem; color: var(--muted); }
+
+/* ---------- illustrations ---------- */
+.illus { display: block; width: 100%; height: auto; }
+.illus .k { fill: none; stroke: var(--ink); stroke-linecap: round; stroke-linejoin: round; }
+.illus .fi { fill: var(--ink); }
+.illus .fa { fill: var(--accent); }
+.illus .fb { fill: var(--bun); }
+.illus .fl { fill: var(--leaf); }
+.illus .ft { fill: var(--tomato); }
+.illus .fm { fill: var(--muted); opacity: 0.45; }
+.illus .fp { fill: var(--card); }
+.illus .cr { fill: var(--c-red); } .illus .co { fill: var(--c-orange); } .illus .cy { fill: var(--c-yellow); }
+.illus .cg { fill: var(--c-green); } .illus .cb { fill: var(--c-blue); } .illus .cp { fill: var(--c-purple); }
+.guide-top { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.guide-top .art { flex: 0 1 200px; max-width: 100%; background: var(--card); border-radius: 12px; padding: 8px; }
+.guide-top .txt { flex: 1 1 220px; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.gloss-list { display: flex; flex-direction: column; gap: 14px; }
+.gitem { display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 14px; align-items: center; }
+.gitem .art { background: var(--paper); border-radius: 10px; padding: 4px; }
+.gitem b { display: block; }
+.gitem span { color: var(--muted); font-size: 0.95rem; }
+
+@media (prefers-reduced-motion: reduce) { .layer { transition: none; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Art lesson · Peer feedback</span>
+    <h1>Feedback Sandwich</h1>
+    <p class="lede">Help a friend improve their artwork. Build your feedback in three layers using the Elements of Art and Principles of Design.</p>
+  </header>
+
+  <div class="layout">
+    <aside>
+      <div class="stack" id="stack">
+        <button type="button" class="layer top" data-step="1"><span class="lname">Top bun</span><span class="lsub">A specific strength</span></button>
+        <button type="button" class="layer mid" data-step="2"><span class="lname">Filling</span><span class="lsub">Something to improve + a solution</span></button>
+        <button type="button" class="layer bot" data-step="3"><span class="lname">Bottom bun</span><span class="lsub">Encouragement</span></button>
+      </div>
+      <p class="stack-note" id="stack-note">Your sandwich fills up as you go.</p>
+    </aside>
+
+    <main class="panel">
+      <!-- Step 0: title -->
+      <section class="step" id="step0">
+        <span class="stepno">Getting started</span>
+        <h2>Whose artwork are you looking at?</h2>
+        <p class="hint">Look carefully at your friend's artwork before you begin. Take your time.</p>
+        <div class="block">
+          <label class="field" for="title">Title of the artwork</label>
+          <input type="text" id="title" maxlength="80" placeholder="e.g. My neighbourhood at night" autocomplete="off">
+          <span class="hint">No title? Describe it in a few words.</span>
+        </div>
+        <div class="block" id="class-block" hidden>
+          <label class="field" for="klass">Your class</label>
+          <select id="klass"></select>
+        </div>
+        <p class="msg warn" id="msg0" hidden></p>
+        <div class="actions"><span></span><button class="btn" id="next0" type="button">Start the top bun</button></div>
+      </section>
+
+      <!-- Step 1: strength -->
+      <section class="step" id="step1" hidden>
+        <span class="stepno">Step 1 of 3 · Top bun</span>
+        <h2>What did your friend do well?</h2>
+        <p class="hint">Tap one or more (up to 3). Tap again to remove one.</p>
+        <div class="block">
+          <span class="group-label">Elements of Art</span>
+          <div class="chips" data-for="s" data-group="elements"></div>
+          <span class="group-label">Principles of Design</span>
+          <div class="chips" data-for="s" data-group="principles"></div>
+        </div>
+        <div class="guide" id="s-guide" hidden></div>
+        <div class="block" id="s-write" hidden>
+          <label class="field" for="praise">Describe the strength. Say where it is and why it works.</label>
+          <div class="starters" id="s-starters"></div>
+          <textarea id="praise" placeholder="Tap a sentence starter above, or write your own."></textarea>
+        </div>
+        <p class="msg warn" id="msg1" hidden></p>
+        <div class="actions">
+          <button class="btn ghost" type="button" data-back="0">Back</button>
+          <button class="btn" type="button" id="next1">Next: the filling</button>
+        </div>
+      </section>
+
+      <!-- Step 2: improve + fix -->
+      <section class="step" id="step2" hidden>
+        <span class="stepno">Step 2 of 3 · Filling</span>
+        <h2>What could be made stronger?</h2>
+        <p class="hint">Tap one or more (up to 3). Tap again to remove one.</p>
+        <div class="block">
+          <span class="group-label">Elements of Art</span>
+          <div class="chips" data-for="i" data-group="elements"></div>
+          <span class="group-label">Principles of Design</span>
+          <div class="chips" data-for="i" data-group="principles"></div>
+        </div>
+        <div class="guide" id="i-guide" hidden></div>
+        <div class="block" id="i-write" hidden>
+          <label class="field" for="observe">What did you notice? Talk about the artwork, not the person, and be kind.</label>
+          <div class="starters" id="i-starters"></div>
+          <textarea id="observe" placeholder="e.g. The sky is one flat colour, so it feels a bit empty next to the detailed buildings."></textarea>
+        </div>
+        <div class="block" id="fix-block" hidden>
+          <h3>Suggest a solution</h3>
+          <p class="hint">Good feedback tells your friend what to try next. Tick one or more ideas that fit their work, or write your own.</p>
+          <div class="fixes" id="fixes"></div>
+        </div>
+        <p class="msg warn" id="msg2" hidden></p>
+        <div class="actions">
+          <button class="btn ghost" type="button" data-back="1">Back</button>
+          <button class="btn" type="button" id="next2">Next: the bottom bun</button>
+        </div>
+      </section>
+
+      <!-- Step 3: encouragement -->
+      <section class="step" id="step3" hidden>
+        <span class="stepno">Step 3 of 3 · Bottom bun</span>
+        <h2>End on a positive note</h2>
+        <div class="block">
+          <label class="field" for="enc">Write a sentence to encourage your friend.</label>
+          <div class="starters" id="e-starters"></div>
+          <textarea id="enc" placeholder="Tap a sentence starter above, or write your own."></textarea>
+        </div>
+        <p class="msg warn" id="msg3" hidden></p>
+        <div class="actions">
+          <button class="btn ghost" type="button" data-back="2">Back</button>
+          <button class="btn" type="button" id="next3">See my sandwich</button>
+        </div>
+      </section>
+
+      <!-- Step 4: review -->
+      <section class="step" id="step4" hidden>
+        <span class="stepno">Review</span>
+        <h2>Your feedback sandwich</h2>
+        <pre class="final" id="final"></pre>
+        <div class="actions" style="justify-content:flex-start">
+          <button class="btn" type="button" id="copy">Copy feedback</button>
+          <a class="btn ghost" id="padlet" href="#" target="_blank" rel="noopener" hidden>Copy and open Padlet</a>
+          <span class="copied" id="copied" hidden>Copied</span>
+        </div>
+        <p class="hint" id="padlet-help" hidden>Your feedback is copied and your class board opens in a new tab. Tap the <b>+</b> button to add a post, then paste your feedback into it.</p>
+        <div class="block">
+          <h3>Before you share it, check</h3>
+          <ul class="check">
+            <li><input type="checkbox" id="c1"><label for="c1"><b>Specific:</b> it names an element or principle and a part of the artwork.</label></li>
+            <li><input type="checkbox" id="c2"><label for="c2"><b>Kind:</b> it talks about the artwork, not the person.</label></li>
+            <li><input type="checkbox" id="c3"><label for="c3"><b>Helpful:</b> it gives a clear idea to try.</label></li>
+          </ul>
+          <p class="hint">Read it in your head. Would you like to receive this feedback?</p>
+        </div>
+        <div class="block">
+          <h3>Want to change a layer?</h3>
+          <div class="edit-row">
+            <button class="btn ghost small" type="button" data-edit="1">Redo top bun</button>
+            <button class="btn ghost small" type="button" data-edit="2">Redo filling</button>
+            <button class="btn ghost small" type="button" data-edit="3">Redo bottom bun</button>
+          </div>
+        </div>
+        <div class="guide">
+          <h3>Now share it</h3>
+          <p style="margin:0">Say it to your friend, write it on a sticky note, or post it where your teacher asks.</p>
+          <p style="margin:0"><b>Reflect:</b> is there something in your friend's work you could try in your own artwork?</p>
+        </div>
+        <div class="actions" style="justify-content:flex-start">
+          <button class="btn ghost" type="button" id="again">Give feedback on another artwork</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <details class="glossary" id="glossary">
+    <summary>What do the elements and principles look like?</summary>
+    <div class="gloss-grid">
+      <div><span class="group-label">Elements of Art</span><div class="gloss-list" id="gloss-e"></div></div>
+      <div><span class="group-label">Principles of Design</span><div class="gloss-list" id="gloss-p"></div></div>
+    </div>
+  </details>
+
+  <footer>Nothing you type here is saved or sent anywhere. It stays on this page until you close it.</footer>
+</div>
+
+<script>
+const ELEMENTS = {
+  line: { name: "Line", meaning: "A mark that joins two points. It can be thick, thin, straight, curved, broken or implied.",
+    look: ["What kinds of lines can you see: thick, thin, curved, zig-zag, broken?", "Do the lines make the work feel calm, energetic or tense?", "Do outlines or contour lines help us read the shapes clearly?"],
+    fixes: ["varying the thickness of your lines to show which parts are closer or more important", "using directional lines to lead the viewer's eye towards the main subject", "adding contour or hatching lines to describe the surface of objects"] },
+  shape: { name: "Shape", meaning: "A flat (2D) area with edges. Shapes can be geometric (squares, circles) or organic (natural, free-flowing).",
+    look: ["Are the shapes mostly geometric, organic, or a mix?", "Is there a variety of shape sizes, or are they all similar?", "Can you clearly recognise the main shapes and silhouettes?"],
+    fixes: ["mixing geometric and organic shapes to add interest", "varying the sizes of your shapes so some stand out more", "simplifying busy shapes so the main subject reads clearly"] },
+  form: { name: "Form", meaning: "A 3D object, or the illusion of 3D on a flat surface (e.g. a sphere instead of a circle).",
+    look: ["Do the objects look flat or three-dimensional?", "Is there light and shadow to show volume?", "Do overlapping objects show what is in front and behind?"],
+    fixes: ["adding shading on one side to make objects look three-dimensional", "overlapping objects to show which ones are in front", "adding highlights where the light hits the object"] },
+  space: { name: "Space", meaning: "The area around, between and within things. Positive space is the subject; negative space is the empty area around it.",
+    look: ["Is there a good balance between filled areas and empty areas?", "Can you see a foreground, middle ground and background?", "Is the empty (negative) space used on purpose?"],
+    fixes: ["making background objects smaller and paler to create a sense of depth", "using the empty space on purpose to give the main subject some breathing room", "filling an empty area with details that support your theme"] },
+  colour: { name: "Colour", meaning: "Hue, intensity and colour schemes (warm, cool, complementary, analogous). Colour often sets the mood.",
+    look: ["What colour scheme is used: warm, cool, complementary, analogous?", "Does the colour match the mood or message of the work?", "Are colours mixed thoughtfully, or used straight from the tube?"],
+    fixes: ["using complementary colours next to the main subject to make it pop", "limiting your palette to a few colours so the work feels more unified", "mixing tints and shades instead of using colours straight from the tube"] },
+  value: { name: "Value (Tone)", meaning: "How light or dark something is. A full range of values creates depth and drama.",
+    look: ["Is there a full range from very light to very dark?", "Where are the darkest darks and lightest lights?", "Do the lights and darks help show the most important part?"],
+    fixes: ["pushing your darks darker to create stronger contrast", "keeping the lightest values near your focal point", "doing a quick value sketch to plan where the lights and darks go"] },
+  texture: { name: "Texture", meaning: "How a surface feels, or looks like it would feel (rough, smooth, fluffy). It can be real or implied.",
+    look: ["Is the texture real (you can touch it) or implied (drawn or painted)?", "Does the texture suit the subject (e.g. rough bark, smooth glass)?", "Is there a variety of textures, or is everything the same?"],
+    fixes: ["adding implied texture with dots, dashes or visible brushstrokes", "using different textures to separate the subject from the background", "experimenting with techniques like sponging, dry brush or collage"] },
+};
+const PRINCIPLES = {
+  balance: { name: "Balance", meaning: "How visual weight is spread out. It can be symmetrical, asymmetrical or radial.",
+    look: ["Does one side of the work feel heavier than the other?", "Is the balance symmetrical, asymmetrical or radial?", "Do colours, sizes and details feel evenly spread?"],
+    fixes: ["moving or adding an element on the lighter side to balance the composition", "repeating a colour on the opposite side to spread out the visual weight", "trying an asymmetrical layout for a more dynamic feel"] },
+  contrast: { name: "Contrast", meaning: "Strong differences, e.g. light vs dark, big vs small, rough vs smooth, warm vs cool.",
+    look: ["What differences can you see: light/dark, big/small, rough/smooth?", "Does the contrast help important parts stand out?", "Are some areas too similar, so they blend together?"],
+    fixes: ["increasing the contrast around the main subject", "placing a smooth area next to a textured area", "adding a few very dark or very bright accents"] },
+  emphasis: { name: "Emphasis", meaning: "The focal point: the part that catches your eye first.",
+    look: ["Where does your eye go first?", "Is that the part the artist most wants us to notice?", "Is anything competing for attention with the focal point?"],
+    fixes: ["making the focal point bigger, brighter or more detailed", "toning down busy areas that compete with the focal point", "placing the focal point using the rule of thirds"] },
+  movement: { name: "Movement", meaning: "How the viewer's eye travels through the work, or how the work suggests motion.",
+    look: ["What path does your eye follow around the artwork?", "Do lines, shapes or colours lead you somewhere?", "Does anything in the work look like it is moving?"],
+    fixes: ["using curved or diagonal lines to guide the eye around the artwork", "angling figures or objects to suggest motion", "repeating shapes along a path to show direction"] },
+  pattern: { name: "Pattern & Rhythm", meaning: "Repeating elements. Rhythm is the visual beat created by that repetition.",
+    look: ["Can you see anything repeated: shapes, colours, lines, motifs?", "Is the repetition regular, alternating or random?", "Does the repetition create a sense of rhythm or beat?"],
+    fixes: ["repeating a motif to create a sense of rhythm", "varying the spacing of repeated shapes so it feels less predictable", "adding a pattern in the background or on clothing to add interest"] },
+  unity: { name: "Unity", meaning: "When all the parts feel like they belong together as one artwork.",
+    look: ["Do all the parts feel connected, like one artwork?", "Is the style or technique consistent throughout?", "Does anything feel out of place?"],
+    fixes: ["repeating a colour or shape throughout to tie the artwork together", "keeping one consistent style or technique across the whole work", "removing or changing an element that feels out of place"] },
+  variety: { name: "Variety", meaning: "Using differences (sizes, shapes, colours) to keep the work interesting.",
+    look: ["Is there enough variety in sizes, shapes, colours or lines?", "Does any part feel repetitive or monotonous?", "Is there too much variety, so it feels messy?"],
+    fixes: ["adding a few different sizes or shapes to break up the repetition", "introducing one accent colour", "mixing thick and thin lines or different textures"] },
+  proportion: { name: "Proportion & Scale", meaning: "The size of things compared to each other, realistic or deliberately exaggerated.",
+    look: ["Do the sizes of things look right compared to each other?", "Is anything exaggerated on purpose? Does it work?", "Do sizes help show distance (near = big, far = small)?"],
+    fixes: ["checking proportions by measuring with your pencil at arm's length", "exaggerating the scale of something important on purpose to emphasise it", "making background objects smaller to show distance"] },
+};
+const ALL = { ...ELEMENTS, ...PRINCIPLES };
+
+// Small diagrams for each element and principle (colours come from the page theme)
+const svg = (label, inner) => `<svg class="illus" viewBox="0 0 160 100" role="img" aria-label="${label}">${inner}</svg>`;
+const range = (n, f) => Array.from({ length: n }, (_, i) => f(i)).join("");
+const motif = (x, y, round) => round
+  ? `<circle class="fa" cx="${x}" cy="${y}" r="8"/>`
+  : `<path class="fb" d="M${x - 8} ${y + 7} L${x} ${y - 8} L${x + 8} ${y + 7}Z"/>`;
+const ART = {
+  line: svg("Thin, curved, zig-zag, broken and thick lines",
+    `<path class="k" stroke-width="1.5" d="M14 14H146"/>
+     <path class="k" stroke-width="3" d="M14 34 Q31 20 48 34 T82 34 T116 34 T146 34"/>
+     <path class="k" stroke-width="2.5" d="M14 58 L26 48 L38 58 L50 48 L62 58 L74 48 L86 58 L98 48 L110 58 L122 48 L134 58 L146 48"/>
+     <path class="k" stroke-width="3" stroke-dasharray="8 7" d="M14 74H146"/>
+     <path class="k" stroke-width="7" d="M14 89H146"/>`),
+  shape: svg("Geometric shapes (circle, square, triangle) and an organic shape",
+    `<circle class="fa" cx="26" cy="52" r="16"/>
+     <rect class="fb" x="50" y="36" width="32" height="32"/>
+     <path class="ft" d="M90 68 L104 34 L118 68Z"/>
+     <path class="fl" d="M138 32 C152 30 154 48 148 56 C142 68 128 70 124 60 C120 50 126 34 138 32Z"/>`),
+  form: svg("A flat square becomes a three-dimensional cube",
+    `<rect class="fa" x="16" y="32" width="40" height="40"/>
+     <path class="k" stroke-width="2.5" d="M68 52 H88 M82 46 L88 52 L82 58"/>
+     <path class="fa" opacity="0.55" d="M100 40 L116 26 L152 26 L136 40Z"/>
+     <path class="fa" d="M136 40 L152 26 L152 62 L136 76Z"/>
+     <path class="fi" opacity="0.35" d="M136 40 L152 26 L152 62 L136 76Z"/>
+     <rect class="fa" x="100" y="40" width="36" height="36"/>`),
+  space: svg("Trees get smaller and paler towards the horizon to show depth",
+    `<path class="k" stroke-width="1.5" d="M8 66 H152"/>
+     <rect class="fi" opacity="0.4" x="127" y="58" width="2" height="8"/><circle class="fl" opacity="0.35" cx="128" cy="54" r="6"/>
+     <rect class="fi" opacity="0.6" x="90" y="60" width="4" height="10"/><circle class="fl" opacity="0.65" cx="92" cy="50" r="12"/>
+     <rect class="fi" x="37" y="74" width="7" height="22"/><circle class="fl" cx="40" cy="52" r="26"/>`),
+  colour: svg("A colour wheel with red, orange, yellow, green, blue and purple",
+    `<circle class="cr" cx="80" cy="18" r="13"/><circle class="co" cx="108" cy="34" r="13"/>
+     <circle class="cy" cx="108" cy="66" r="13"/><circle class="cg" cx="80" cy="82" r="13"/>
+     <circle class="cb" cx="52" cy="66" r="13"/><circle class="cp" cx="52" cy="34" r="13"/>`),
+  value: svg("A value scale from very light to very dark",
+    range(7, (i) => `<rect class="fi" opacity="${[0.08, 0.2, 0.35, 0.5, 0.65, 0.82, 1][i]}" x="${10 + i * 20}" y="28" width="18" height="44" rx="2"/>`)),
+  texture: svg("Three textures: dots, hatching and wavy brushstrokes",
+    `<rect class="k" stroke-width="1.5" x="10" y="20" width="40" height="60" rx="6"/>
+     <rect class="k" stroke-width="1.5" x="60" y="20" width="40" height="60" rx="6"/>
+     <rect class="k" stroke-width="1.5" x="110" y="20" width="40" height="60" rx="6"/>` +
+    range(12, (i) => `<circle class="fi" cx="${18 + (i % 3) * 12}" cy="${30 + Math.floor(i / 3) * 13}" r="2.2"/>`) +
+    range(5, (i) => `<path class="k" stroke-width="1.5" d="M${64 + i * 6} 74 L${74 + i * 6} 26"/>`) +
+    range(3, (i) => `<path class="k" stroke-width="2.5" d="M116 ${35 + i * 15} Q123 ${29 + i * 15} 130 ${35 + i * 15} T144 ${35 + i * 15}"/>`)),
+  balance: svg("Asymmetrical balance: one big circle balances two small circles on a see-saw",
+    `<path class="k" stroke-width="3" d="M14 82 H146"/>
+     <path class="fi" d="M80 84 L70 98 L90 98Z"/>
+     <circle class="fa" cx="56" cy="60" r="20"/>
+     <circle class="fb" cx="116" cy="70" r="10"/><circle class="fb" cx="138" cy="70" r="10"/>`),
+  contrast: svg("Light against dark: a light circle on dark and a dark circle on light",
+    `<rect class="fi" x="20" y="15" width="60" height="70"/>
+     <rect class="fp" x="80" y="15" width="60" height="70"/>
+     <circle class="fp" cx="50" cy="50" r="16"/><circle class="fi" cx="110" cy="50" r="16"/>
+     <rect class="k" stroke-width="1.5" x="20" y="15" width="120" height="70"/>`),
+  emphasis: svg("Many small grey dots, with one large coloured dot as the focal point",
+    range(21, (i) => { const x = 20 + (i % 7) * 20, y = 25 + Math.floor(i / 7) * 25; return x === 100 && y === 50 ? "" : `<circle class="fm" cx="${x}" cy="${y}" r="5"/>`; }) +
+    `<circle class="fa" cx="100" cy="50" r="14"/>`),
+  movement: svg("A curved path leads the eye across the picture",
+    `<circle class="fa" cx="16" cy="80" r="7"/>
+     <path class="k" stroke-width="3" d="M24 80 C55 92 60 20 100 30 S140 70 150 40"/>
+     <path class="k" stroke-width="3" d="M141 43 L150 40 L153 49"/>
+     <circle class="fa" opacity="0.5" cx="60" cy="56" r="4"/><circle class="fa" opacity="0.5" cx="118" cy="46" r="4"/>`),
+  pattern: svg("A repeated motif of circles and triangles that creates rhythm",
+    range(7, (i) => motif(20 + i * 20, 35, i % 2 === 0) + motif(20 + i * 20, 70, i % 2 === 1))),
+  unity: svg("Overlapping shapes in one colour family that belong together",
+    `<circle class="fa" opacity="0.85" cx="58" cy="52" r="24"/>
+     <rect class="fa" opacity="0.5" x="66" y="28" width="42" height="42"/>
+     <circle class="fa" opacity="0.65" cx="112" cy="60" r="17"/>`),
+  variety: svg("Different shapes, sizes and colours together",
+    `<circle class="ft" cx="30" cy="60" r="18"/>
+     <rect class="fb" x="56" y="18" width="26" height="26"/>
+     <path class="fl" d="M96 82 L112 46 L128 82Z"/>
+     <circle class="fa" cx="142" cy="28" r="7"/>
+     <path class="k" stroke-width="2.5" d="M58 78 L66 68 L74 78 L82 68"/>`),
+  proportion: svg("A large figure in front and a small figure behind show scale and distance",
+    `<path class="k" stroke-width="1.5" d="M10 92 H150"/>
+     <g class="k" stroke-width="3"><circle cx="45" cy="24" r="9"/><path d="M45 33 V64 M29 45 H61 M45 64 L34 90 M45 64 L56 90"/></g>
+     <g class="k" stroke-width="2"><circle cx="115" cy="63" r="4.5"/><path d="M115 68 V79 M108 72 H122 M115 79 L110 90 M115 79 L120 90"/></g>`),
+};
+const PRAISE_STARTERS = ["I really like how you used {item} in the ... because ...", "The {item} in the ... works well because it makes me notice ...", "Your use of {item} helps the artwork ..."];
+const OBSERVE_STARTERS = ["I noticed that the {item} in the ... could be stronger because ...", "One thing I wondered about is ...", "The ... part feels a little ... compared to the rest."];
+const ENC_STARTERS = ["Keep going, I can't wait to see ...", "You've clearly put a lot of effort into ...", "With a few small changes, this will ...", "I'm excited to see how you develop ..."];
+const VAGUE = new Set(["nice","good","cool","ok","okay","beautiful","pretty","great","awesome","amazing","interesting","fine","best","solid"]);
+const HARSH = new Set(["ugly","bad","terrible","horrible","stupid","lousy","sucks","trash","rubbish","worst","disgusting","hate","jialat","cringe","boring","lame"]);
+
+// Teachers: paste your Padlet board link between the quotes, e.g. "https://padlet.com/yourname/art-feedback"
+// Teachers: one line per class. The link can be a Padlet, Lino or any other board students can post to.
+// To add a class, copy a line, change the name and paste the board link between the quotes.
+const CLASSES = [
+  { name: "Feedback Sandwich Padlet", url: "https://padlet.com/leong_yong_yu_liang_yongyu/feedback-sandwich-class-2r-s024myhsg2h9zrs4665p" },
+  // { name: "2S", url: "https://linoit.com/users/yourname/canvases/2S-feedback" },
+];
+
+const $ = (id) => document.getElementById(id);
+const words = (t) => (t.toLowerCase().match(/[a-z']+/g) || []);
+const findHarsh = (t) => [...new Set(words(t).filter((w) => HARSH.has(w)))];
+function tooVague(t) {
+  const w = words(t);
+  if (w.length < 6) return true;
+  return w.length < 10 && w.some((x) => VAGUE.has(x));
+}
+function asSentence(t) {
+  t = t.trim();
+  if (!t) return t;
+  t = t[0].toUpperCase() + t.slice(1);
+  return /[.!?]$/.test(t) ? t : t + ".";
+}
+function cleanFix(t) {
+  return t.trim().replace(/[.!]+$/, "").replace(/^(you\s+)?(could|can|should|might)\s+(try\s+)?/i, "").trim();
+}
+
+let S;
+const MAX_PICKS = 3;
+function reset() {
+  S = { step: 0, reviewed: false, title: "", s: [], praise: "", i: [], observe: "", fixSel: new Set(), own: "", fixes: [], enc: "", nudge: {}, harsh: 0 };
+  ["title", "praise", "observe", "enc"].forEach((id) => ($(id).value = ""));
+  ["c1", "c2", "c3"].forEach((id) => ($(id).checked = false));
+  document.querySelectorAll(".chip").forEach((c) => c.setAttribute("aria-pressed", "false"));
+  ["s-guide", "s-write", "i-guide", "i-write", "fix-block"].forEach((id) => ($(id).hidden = true));
+}
+
+// "line", "line and colour", "line, colour and balance"
+function joinNames(keys) {
+  const n = keys.map((k) => ALL[k].name.toLowerCase());
+  return n.length < 2 ? (n[0] || "") : n.slice(0, -1).join(", ") + " and " + n[n.length - 1];
+}
+
+function compose() {
+  const fixes = S.fixes.map((f) => f.replace(/\.$/, ""));
+  const fixText = fixes.map((f, n) => (n === 0 ? `You could try ${f}.` : `You could also try ${f}.`)).join(" ");
+  return `Feedback on "${S.title}":\n\n` +
+    `Top bun: ${asSentence(S.praise)}\n\n` +
+    `Filling: ${asSentence(S.observe)} ${fixText}\n\n` +
+    `Bottom bun: ${asSentence(S.enc)}`;
+}
+
+function msg(n, text, kind = "warn", eg) {
+  const el = $("msg" + n);
+  el.className = "msg " + kind;
+  el.textContent = text;
+  if (eg) { const s = document.createElement("span"); s.className = "eg"; s.textContent = eg; el.appendChild(s); }
+  el.hidden = false;
+}
+function clearMsg(n) { $("msg" + n).hidden = true; }
+
+function go(step) {
+  S.step = step;
+  for (let n = 0; n <= 4; n++) $("step" + n).hidden = n !== step;
+  if (step === 4) $("final").textContent = compose();
+  $("next1").textContent = S.reviewed ? "Back to review" : "Next: the filling";
+  $("next2").textContent = S.reviewed ? "Back to review" : "Next: the bottom bun";
+  $("next3").textContent = S.reviewed ? "Back to review" : "See my sandwich";
+  renderStack();
+  const panel = document.querySelector(".panel");
+  if (panel.getBoundingClientRect().top < 0) panel.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function renderStack() {
+  const filled = { 1: !!S.praise, 2: S.fixes.length > 0, 3: !!S.enc };
+  const subs = { 1: S.praise, 2: S.observe, 3: S.enc };
+  const defaults = { 1: "A specific strength", 2: "Something to improve + a solution", 3: "Encouragement" };
+  document.querySelectorAll(".layer").forEach((el) => {
+    const n = +el.dataset.step;
+    el.classList.toggle("done", filled[n]);
+    el.classList.toggle("current", S.step === n);
+    el.classList.toggle("clickable", S.reviewed);
+    el.querySelector(".lsub").textContent = filled[n] ? subs[n] : defaults[n];
+  });
+  $("stack-note").textContent = S.reviewed ? "Tap a layer to change it." : "Your sandwich fills up as you go.";
+}
+
+function fillStarters(boxId, templates, keys, textareaId) {
+  const box = $(boxId);
+  box.replaceChildren();
+  const name = joinNames(keys);
+  templates.forEach((t) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "starter";
+    b.textContent = t.replace("{item}", name);
+    b.addEventListener("click", () => {
+      const ta = $(textareaId);
+      ta.value = ta.value.trim() ? ta.value.trim() + " " + b.textContent : b.textContent;
+      ta.focus();
+      ta.setSelectionRange(ta.value.length, ta.value.length);
+    });
+    box.appendChild(b);
+  });
+}
+
+function showGuides(id, keys) {
+  const g = $(id);
+  g.replaceChildren();
+  keys.forEach((key) => {
+    const it = ALL[key];
+    const item = document.createElement("div"); item.className = "guide-item";
+    const top = document.createElement("div"); top.className = "guide-top";
+    const art = document.createElement("div"); art.className = "art"; art.innerHTML = ART[key];
+    const txt = document.createElement("div"); txt.className = "txt";
+    const h = document.createElement("h3"); h.textContent = it.name;
+    const m = document.createElement("p"); m.className = "meaning"; m.textContent = it.meaning;
+    txt.append(h, m); top.append(art, txt);
+    const l = document.createElement("b"); l.textContent = "Look closely at your friend's work:";
+    const ul = document.createElement("ul");
+    it.look.forEach((q) => { const li = document.createElement("li"); li.textContent = q; ul.appendChild(li); });
+    item.append(top, l, ul);
+    g.appendChild(item);
+  });
+  g.hidden = keys.length === 0;
+}
+
+function fixBox(value, content) {
+  const lab = document.createElement("label"); lab.className = "fix";
+  const c = document.createElement("input"); c.type = "checkbox"; c.id = "fix-" + value.replace(":", "-"); c.value = value;
+  c.checked = S.fixSel.has(value);
+  c.addEventListener("change", () => { c.checked ? S.fixSel.add(value) : S.fixSel.delete(value); });
+  lab.append(c, content);
+  return { lab, c };
+}
+
+function showFixes(keys) {
+  const box = $("fixes");
+  box.replaceChildren();
+  // drop ticked ideas that belong to an element/principle the student un-picked
+  [...S.fixSel].forEach((v) => { if (v !== "own" && !keys.includes(v.split(":")[0])) S.fixSel.delete(v); });
+  keys.forEach((key) => {
+    if (keys.length > 1) {
+      const head = document.createElement("span"); head.className = "group-label"; head.textContent = ALL[key].name;
+      box.appendChild(head);
+    }
+    ALL[key].fixes.forEach((f, idx) => {
+      const span = document.createElement("span"); span.textContent = "You could try " + f + ".";
+      box.appendChild(fixBox(`${key}:${idx}`, span).lab);
+    });
+  });
+  if (keys.length > 1) {
+    const head = document.createElement("span"); head.className = "group-label"; head.textContent = "Your own idea";
+    box.appendChild(head);
+  }
+  const wrap = document.createElement("span"); wrap.className = "own";
+  const t = document.createElement("span"); t.textContent = "I have my own idea. You could try ...";
+  const inp = document.createElement("input"); inp.type = "text"; inp.id = "own-fix";
+  inp.placeholder = "e.g. adding a darker blue behind the building so it stands out";
+  inp.value = S.own;
+  const { lab, c } = fixBox("own", wrap);
+  inp.addEventListener("input", () => { S.own = inp.value; if (inp.value.trim()) { c.checked = true; S.fixSel.add("own"); } });
+  wrap.append(t, inp);
+  box.appendChild(lab);
+  $("fix-block").hidden = keys.length === 0;
+}
+
+function buildChips() {
+  document.querySelectorAll(".chips").forEach((box) => {
+    const role = box.dataset.for;
+    const group = box.dataset.group === "elements" ? ELEMENTS : PRINCIPLES;
+    Object.entries(group).forEach(([key, it]) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "chip"; b.textContent = it.name;
+      b.dataset.key = key; b.setAttribute("aria-pressed", "false");
+      b.addEventListener("click", () => pick(role, key));
+      box.appendChild(b);
+    });
+  });
+}
+
+function pick(role, key) {
+  const n = role === "s" ? 1 : 2;
+  const list = S[role];
+  const at = list.indexOf(key);
+  if (at >= 0) list.splice(at, 1);
+  else if (list.length >= MAX_PICKS) return msg(n, `You can choose up to ${MAX_PICKS}. Tap one you've chosen to remove it first. Fewer, well-explained points are more helpful.`);
+  else list.push(key);
+  clearMsg(n);
+  document.querySelectorAll(`.chips[data-for="${role}"] .chip`).forEach((c) => c.setAttribute("aria-pressed", String(list.includes(c.dataset.key))));
+  if (role === "s") {
+    S.nudge.praise = false;
+    showGuides("s-guide", list);
+    fillStarters("s-starters", PRAISE_STARTERS, list, "praise");
+    $("s-write").hidden = list.length === 0;
+  } else {
+    S.nudge.observe = false; S.nudge.fix = false; S.harsh = 0;
+    showGuides("i-guide", list);
+    fillStarters("i-starters", OBSERVE_STARTERS, list, "observe");
+    $("i-write").hidden = list.length === 0;
+    showFixes(list);
+  }
+}
+
+function nextAfter(step) { go(S.reviewed ? 4 : step + 1); }
+
+$("next0").addEventListener("click", () => {
+  const t = $("title").value.trim();
+  if (BOARDS.length > 1 && $("klass").value === "") return msg(0, "Choose your class so your feedback goes to the right board.");
+  if (!t) return msg(0, "Type the title, or a few words that describe the artwork.");
+  clearMsg(0); S.title = t; go(1);
+});
+$("title").addEventListener("keydown", (e) => { if (e.key === "Enter") $("next0").click(); });
+
+$("next1").addEventListener("click", () => {
+  if (!S.s.length) return msg(1, "Choose at least one element or principle that your friend did well.");
+  const t = $("praise").value.trim();
+  if (!t) return msg(1, "Write about the strength you noticed.");
+  const minWords = 6 + (S.s.length - 1) * 4;
+  if ((tooVague(t) || words(t).length < minWords) && !S.nudge.praise) {
+    S.nudge.praise = true;
+    return msg(1, `Good start! Can you make it more specific? Where in the artwork is the ${joinNames(S.s)} effective, and why does it work?` +
+      (S.s.length > 1 ? " Try to say something about each one you chose." : ` Words like "nice" or "good" don't tell your friend what to keep doing.`));
+  }
+  clearMsg(1); S.praise = t; nextAfter(1);
+});
+
+$("next2").addEventListener("click", () => {
+  if (!S.i.length) return msg(2, "Choose at least one element or principle that could be made stronger.");
+  const t = $("observe").value.trim();
+  if (!t) return msg(2, "Describe what you noticed that could be stronger.");
+  const harsh = findHarsh(t);
+  if (harsh.length && S.harsh < 2) {
+    S.harsh++;
+    return msg(2, `The word${harsh.length > 1 ? "s" : ""} "${harsh.join('", "')}" might hurt your friend's feelings, and ${harsh.length > 1 ? "they don't" : "it doesn't"} explain what to change. Try describing what you see instead.`, "kind",
+      'Instead of "The background is boring", try "The background is one flat colour, so it feels a bit empty next to the detailed figure."');
+  }
+  const minWords = 6 + (S.i.length - 1) * 4;
+  if ((tooVague(t) || words(t).length < minWords) && !S.nudge.observe) {
+    S.nudge.observe = true;
+    return msg(2, "Can you be more specific? Which part of the artwork, and what exactly could be stronger?" +
+      (S.i.length > 1 ? " Try to say something about each one you chose." : ""));
+  }
+  if (!S.fixSel.size) return msg(2, "Now tick at least one solution your friend could try, or write your own idea.");
+  const fixes = [];
+  S.i.forEach((key) => ALL[key].fixes.forEach((f, idx) => { if (S.fixSel.has(`${key}:${idx}`)) fixes.push(f); }));
+  if (S.fixSel.has("own")) {
+    S.own = $("own-fix").value;
+    const own = cleanFix(S.own);
+    if (!own) return msg(2, "Write your own idea in the box, or untick it.");
+    if (words(own).length < 3 && !S.nudge.fix) {
+      S.nudge.fix = true;
+      return msg(2, "Can you say a bit more about how they could do your idea?");
+    }
+    fixes.push(own);
+  }
+  if (fixes.length > 3 && !S.nudge.many) {
+    S.nudge.many = true;
+    return msg(2, `You've ticked ${fixes.length} ideas. Your friend may find 2 or 3 easier to act on. Untick some, or tap Next again to keep them all.`);
+  }
+  clearMsg(2); S.observe = t; S.fixes = fixes; nextAfter(2);
+});
+
+$("next3").addEventListener("click", () => {
+  const t = $("enc").value.trim();
+  if (!t) return msg(3, "Write a sentence to encourage your friend.");
+  clearMsg(3); S.enc = t; S.reviewed = true; go(4);
+});
+
+document.querySelectorAll("[data-back]").forEach((b) => b.addEventListener("click", () => go(+b.dataset.back)));
+document.querySelectorAll("[data-edit]").forEach((b) => b.addEventListener("click", () => go(+b.dataset.edit)));
+document.querySelectorAll(".layer").forEach((l) => l.addEventListener("click", () => { if (S.reviewed) go(+l.dataset.step); }));
+
+$("copy").addEventListener("click", () => {
+  const text = compose();
+  const done = () => { $("copied").hidden = false; setTimeout(() => ($("copied").hidden = true), 2500); };
+  const fallback = () => {
+    const r = document.createRange(); r.selectNodeContents($("final"));
+    const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    $("copied").textContent = "Selected. Press copy on your device.";
+    done();
+  };
+  try {
+    navigator.clipboard.writeText(text).then(() => { $("copied").textContent = "Copied"; done(); }, fallback);
+  } catch (e) { fallback(); }
+});
+
+// ---------- class boards ----------
+const BOARDS = CLASSES.filter((c) => c && c.name && /^https:\/\//i.test(c.url || ""));
+const klass = $("klass");
+if (BOARDS.length > 1) {
+  const ph = document.createElement("option");
+  ph.value = ""; ph.textContent = "Choose your class";
+  klass.appendChild(ph);
+  $("class-block").hidden = false;
+}
+BOARDS.forEach((c, i) => {
+  const o = document.createElement("option");
+  o.value = String(i); o.textContent = c.name;
+  klass.appendChild(o);
+});
+function updateBoardLink() {
+  const a = $("padlet");
+  const c = klass.value === "" ? null : BOARDS[+klass.value];
+  a.hidden = $("padlet-help").hidden = !c;
+  if (!c) return;
+  a.href = c.url;
+  a.textContent = `Copy and open ${c.name}`;
+}
+klass.addEventListener("change", () => { clearMsg(0); updateBoardLink(); });
+$("padlet").addEventListener("click", () => {
+  try { navigator.clipboard.writeText(compose()).catch(() => {}); } catch (e) {}
+});
+updateBoardLink();
+
+$("again").addEventListener("click", () => { reset(); go(0); $("title").focus(); });
+
+function buildGlossary() {
+  [["gloss-e", ELEMENTS], ["gloss-p", PRINCIPLES]].forEach(([id, group]) => {
+    const list = $(id);
+    Object.entries(group).forEach(([key, it]) => {
+      const row = document.createElement("div"); row.className = "gitem";
+      const art = document.createElement("div"); art.className = "art"; art.innerHTML = ART[key];
+      const txt = document.createElement("div");
+      const b = document.createElement("b"); b.textContent = it.name;
+      const s = document.createElement("span"); s.textContent = it.meaning;
+      txt.append(b, s); row.append(art, txt); list.appendChild(row);
+    });
+  });
+}
+
+buildChips();
+buildGlossary();
+reset();
+go(0);
+</script>
+
+</body></html>

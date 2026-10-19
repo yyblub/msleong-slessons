@@ -1,0 +1,975 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body><meta charset="utf-8">
+<title>Ms Leong’s Lessons</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&display=swap">
+<style id="hubStyle">/* Layout: a classroom pinboard. A big name banner, the warm-up gacha, then one large card per resource. */
+:root{
+  --paper:#F6F6F2;
+  --card:#FFFFFF;
+  --ink:#16182B;
+  --muted:#565A70;
+  --line:#DCDCE4;
+  --accent:#2340B8;
+  --accent-ink:#FFFFFF;
+  --accent-soft:#E4E8FA;
+  --pin:#D7322B;
+  --f-display:"Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Verdana", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#11121A; --card:#1A1C27; --ink:#ECEDF5; --muted:#A4A7BB; --line:#2C2E3F;
+    --accent:#8C9DFF; --accent-ink:#0E1020; --accent-soft:#252B4D; --pin:#FF7A6E; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#11121A; --card:#1A1C27; --ink:#ECEDF5; --muted:#A4A7BB; --line:#2C2E3F;
+  --accent:#8C9DFF; --accent-ink:#0E1020; --accent-soft:#252B4D; --pin:#FF7A6E; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:32px 56px;display:grid;gap:48px}
+h1,h2,h3{font-family:var(--f-display);margin:0;line-height:1.05;text-wrap:balance}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:8px}
+.eyebrow{font-size:12.5px;letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+
+header.banner{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px 32px;align-items:center}
+header.banner h1{font-size:clamp(44px,8vw,88px);font-weight:800;letter-spacing:-.03em}
+header.banner p{color:var(--muted);font-size:18px;max-width:52ch;margin-top:12px}
+.menu{display:grid;gap:10px;width:min(400px,100%)}
+.menu a{display:grid;grid-template-columns:48px minmax(0,1fr);gap:14px;align-items:center;text-decoration:none;background:var(--card);border:2px solid var(--ink);border-radius:14px;padding:12px 16px;box-shadow:0 3px 0 var(--ink);transition:transform .12s,box-shadow .12s}
+.menu a:hover{transform:translateY(-2px);box-shadow:0 5px 0 var(--ink)}
+.menu a:active{transform:translateY(2px);box-shadow:0 1px 0 var(--ink)}
+.menu svg{width:48px;height:48px;display:block}
+.menu b{display:block;font-family:var(--f-display);font-size:18px;line-height:1.15}
+.menu small{display:block;color:var(--muted);font-size:14px;margin-top:2px}
+
+.resources{display:grid;gap:18px}
+.res{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);background:var(--card);border:1.5px solid var(--line);border-radius:16px;overflow:hidden}
+.res .art{background:var(--accent-soft);display:grid;place-items:center;padding:20px}
+.res .art svg{width:100%;max-width:240px;height:auto;display:block}
+.res .body{padding:clamp(18px,3vw,28px);display:grid;gap:12px;align-content:start;min-width:0}
+.res h3{font-size:clamp(28px,3.6vw,38px);font-weight:800;letter-spacing:-.015em}
+.res p{max-width:60ch}
+.res ul{margin:0;padding-left:1.2em;display:grid;gap:4px;color:var(--muted);font-size:15.5px}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tags span{font-size:13px;font-weight:700;border:1.5px solid var(--line);border-radius:999px;padding:3px 10px;color:var(--muted)}
+.open{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+.btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:700;border-radius:999px;padding:10px 20px;border:1.5px solid var(--accent);background:var(--accent);color:var(--accent-ink)}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn:hover{filter:brightness(1.08)}
+
+footer{border-top:1px solid var(--line);padding-top:18px;color:var(--muted);font-size:14.5px}
+
+/* ---------- sketch gacha ---------- */
+.gacha{background:var(--card);border:1.5px solid var(--line);border-radius:20px;padding:clamp(18px,3.5vw,32px);display:grid;gap:22px}
+.gacha:fullscreen{border:0;border-radius:0;overflow:auto;align-content:center;padding:max(24px,4vw)}
+.g-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px 24px;align-items:start}
+.g-head > div{display:grid;gap:8px;max-width:62ch}
+.g-head h2{font-size:clamp(32px,4.6vw,48px);font-weight:800;letter-spacing:-.02em}
+.g-head p{color:var(--muted)}
+.g-body{display:grid;grid-template-columns:minmax(0,330px) minmax(0,1fr);gap:clamp(18px,4vw,40px);align-items:center}
+.shelf{display:grid;gap:12px;justify-items:center}
+.boxgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 12px;width:100%;max-width:330px;padding-bottom:10px;border-bottom:6px solid var(--ink)}
+.mbox{background:none;border:0;padding:0;cursor:pointer;border-radius:10px;transition:opacity .3s,transform .15s}
+.mbox:hover:not(:disabled){transform:translateY(-4px)}
+.mbox:disabled{cursor:default}
+.mbox svg{width:100%;height:auto;display:block;overflow:visible}
+.mbox .lid{transform-box:fill-box;transform-origin:20% 100%;transition:transform .9s cubic-bezier(.3,1.4,.5,1),opacity .6s .5s}
+.mbox .crack{opacity:0;transition:opacity .2s}
+.mbox.cracked .crack{opacity:1}
+.mbox.open .crack{opacity:0}
+.mbox .burst{opacity:0;transform-box:fill-box;transform-origin:50% 100%;transform:scale(.3);transition:opacity .4s,transform .8s cubic-bezier(.2,1.6,.4,1)}
+.mbox.shake svg{animation:bshake .38s ease-in-out 4;transform-origin:50% 95%}
+@keyframes bshake{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+.mbox.open .lid{transform:translate(18px,-50px) rotate(34deg);opacity:0}
+.mbox.open .burst{opacity:1;transform:scale(1)}
+.mbox.dim{opacity:.3}
+.shelf-note{font-size:15px;color:var(--muted);text-align:center}
+.again{font-family:var(--f-display);font-size:18px;font-weight:800;padding:11px 22px;border-radius:999px;border:0;background:var(--pin);color:#fff;cursor:pointer;box-shadow:0 4px 0 color-mix(in srgb, var(--pin) 60%, #000)}
+.again:active{transform:translateY(3px);box-shadow:0 1px 0 color-mix(in srgb, var(--pin) 60%, #000)}
+.results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.cap{border-radius:18px;padding:18px 20px;display:grid;gap:8px;align-content:start;border:2.5px solid var(--ink);background:var(--paper);position:relative;overflow:hidden;min-height:220px}
+.cap::before{content:"";position:absolute;inset:0 0 auto 0;height:12px;background:var(--cap)}
+.cap.topic{--cap:#F4C430}
+.cap.focus{--cap:var(--kind,#2340B8)}
+.cap-label{font-size:13px;letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:var(--muted);margin-top:6px}
+.cap strong{font-family:var(--f-display);font-size:clamp(26px,3.2vw,40px);line-height:1.05;letter-spacing:-.01em;overflow-wrap:break-word;hyphens:auto}
+.cap-note{font-size:16px}
+.kind-chip{justify-self:start;font-size:13px;font-weight:700;border-radius:999px;padding:3px 10px;background:var(--kind,#2340B8);color:#fff}
+.swap{justify-self:start;margin-top:auto;font:inherit;font-size:14.5px;font-weight:700;background:none;border:1.5px solid var(--line);border-radius:999px;padding:5px 12px;cursor:pointer;color:var(--ink)}
+.swap:hover{border-color:var(--ink)}
+.cap.pop{animation:pop .7s cubic-bezier(.2,1.5,.4,1) both}
+.cap.focus.pop{animation-delay:0s}
+@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+.g-tools{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:18px}
+.pools{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;font-size:15.5px}
+.pools label{display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-weight:700}
+.pools input{width:18px;height:18px;accent-color:var(--accent)}
+.g-side{display:grid;gap:12px;justify-items:end;align-content:start}
+.timer-card{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center;justify-content:center}
+.tc-top{display:flex;align-items:center;gap:10px}
+.tc-btns{display:flex;gap:8px}
+.tbtn:disabled{opacity:.4;cursor:not-allowed}
+.go-label{font-family:var(--f-display);font-weight:800;font-size:22px;color:var(--pin);opacity:0;white-space:nowrap}
+.go-label.show{animation:gopop 2.8s ease-out both}
+@keyframes gopop{0%{opacity:0;transform:scale(.6) rotate(-6deg)}12%{opacity:1;transform:scale(1.12) rotate(3deg)}22%{transform:scale(1) rotate(0)}80%{opacity:1}100%{opacity:0}}
+.alarm{width:44px;height:44px;flex:none;color:var(--ink)}
+.timer-card.ringing .alarm{animation:ring .14s linear infinite}
+/* while counting down: the alarm clock rocks like a ticking clock and the numbers pulse once a second */
+.timer-card.running .alarm{animation:tock 1s ease-in-out infinite;transform-origin:50% 60%}
+.timer-card.running .clock{animation:beat 1s ease-out infinite}
+.timer-card.kick .tc-top{animation:kick .6s cubic-bezier(.2,1.6,.4,1)}
+@keyframes tock{0%,100%{transform:rotate(-9deg)}50%{transform:rotate(9deg)}}
+@keyframes beat{0%{transform:scale(1.08)}35%,100%{transform:scale(1)}}
+@keyframes kick{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-10px) scale(1.12)}60%{transform:translateY(2px) scale(.97)}100%{transform:none}}
+@keyframes ring{0%,100%{transform:rotate(0)}25%{transform:rotate(-14deg)}75%{transform:rotate(14deg)}}
+.timer-card .clock{font-family:var(--f-display);font-weight:800;font-size:clamp(34px,5vw,52px);font-variant-numeric:tabular-nums;min-width:4.2ch;text-align:center;line-height:1}
+.timer-card .clock.done{color:var(--pin)}
+.seg{display:inline-flex;border:1.5px solid var(--ink);border-radius:999px;overflow:hidden}
+.seg button{font:inherit;font-size:14.5px;font-weight:700;border:0;background:var(--card);color:var(--ink);padding:6px 12px;cursor:pointer}
+.seg button + button{border-left:1.5px solid var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.tbtn{font:inherit;font-size:15px;font-weight:700;border-radius:999px;padding:7px 16px;border:1.5px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer}
+.tbtn.go{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.gacha.big .cap strong{font-size:clamp(40px,6vw,72px)}
+.gacha.big .cap-note{font-size:20px}
+.gacha.big .cap{min-height:300px}
+@media (prefers-reduced-motion: reduce){ .go-label.show{animation:none;opacity:1} .timer-card.running .alarm,.timer-card.running .clock,.timer-card.kick .tc-top,.timer-card.ringing .alarm,.mbox.shake svg,.cap.pop{animation:none} .mbox .lid,.mbox .burst{transition:none} }
+
+@media (max-width: 760px){
+  header.banner{grid-template-columns:minmax(0,1fr)}
+
+  .g-body{grid-template-columns:minmax(0,1fr)}
+  .g-head{grid-template-columns:minmax(0,1fr)}
+  .g-side{justify-items:start}
+  .results{grid-template-columns:minmax(0,1fr)}
+  .cap{min-height:0}
+  .res{grid-template-columns:minmax(0,1fr)}
+  .res .art{padding:16px}
+  .res .art svg{max-width:200px}
+}
+/* ---------- angry hamster meme: glitches in when the timer starts, bangs its pan, glitches out ---------- */
+.meme{position:fixed;left:50%;top:50%;z-index:50;pointer-events:none;width:min(340px,80vw);transform:translate(-50%,-50%)}
+.meme-card{position:relative;background:#fff;border:4px solid #16182B;border-radius:14px;padding:14px 14px 10px;box-shadow:0 18px 40px -10px rgba(0,0,0,.45);
+  filter:drop-shadow(4px 0 0 rgba(255,0,70,.75)) drop-shadow(-4px 0 0 rgba(0,210,255,.75));overflow:hidden}
+.meme-card::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(transparent 0 3px,rgba(0,0,0,.10) 3px 4px);pointer-events:none}
+.meme-cap{font-family:Impact,"Bricolage Grotesque","Arial Black",sans-serif;font-weight:900;font-size:clamp(26px,6vw,36px);line-height:1;text-align:center;text-transform:uppercase;color:#fff;
+  -webkit-text-stroke:2px #16182B;paint-order:stroke fill;text-shadow:0 3px 0 #16182B;letter-spacing:.02em}
+.meme svg{display:block;width:100%;height:auto}
+.meme.play .meme-card{animation:glitchIn .4s steps(1) both, jitter .14s steps(2) .4s 13, glitchOut .45s steps(1) 2.25s forwards}
+.meme .m-stick{transform-box:view-box;transform-origin:88px 64px}
+.meme .m-pan{transform-box:view-box;transform-origin:34px 40px}
+.meme .m-clang{opacity:0}
+.meme.play .m-stick{animation:whack .36s ease-in .4s 5}
+.meme.play .m-pan{animation:panwob .36s .4s 5}
+.meme.play .m-clang{animation:flash .36s .4s 5}
+@keyframes glitchIn{0%{opacity:0;transform:scale(.6) skewX(25deg);clip-path:inset(40% 0 45% 0)}20%{opacity:1;transform:translateX(16px) scale(1.06) skewX(-12deg);clip-path:inset(8% 0 62% 0)}40%{transform:translateX(-14px) scale(.97);clip-path:inset(55% 0 4% 0)}60%{transform:translateX(8px);clip-path:inset(0 0 35% 0)}80%{transform:skewX(5deg);clip-path:inset(22% 0 0 0)}100%{opacity:1;transform:none;clip-path:inset(0)}}
+@keyframes jitter{0%{transform:translate(0,0)}50%{transform:translate(-2px,1px)}100%{transform:translate(2px,-1px)}}
+@keyframes glitchOut{0%{opacity:1;transform:none;clip-path:inset(0)}20%{transform:translateX(-14px) skewX(10deg);clip-path:inset(30% 0 20% 0)}40%{transform:translateX(18px) scale(1.04);clip-path:inset(0 0 70% 0)}60%{transform:translateX(-6px) scaleY(.4);clip-path:inset(60% 0 10% 0)}80%{opacity:1;transform:scaleY(.08) scaleX(1.2);clip-path:inset(45% 0 45% 0)}100%{opacity:0;transform:scaleY(0);clip-path:inset(50% 0 50% 0)}}
+@keyframes whack{0%{transform:rotate(0)}45%,55%{transform:rotate(-62deg)}100%{transform:rotate(0)}}
+@keyframes panwob{0%,42%{transform:rotate(0)}52%{transform:rotate(-10deg)}72%{transform:rotate(5deg)}100%{transform:rotate(0)}}
+@keyframes flash{0%,42%{opacity:0}50%{opacity:1}85%,100%{opacity:0}}
+/* time's up: the hamster cheers up and dances */
+.meme .m-happy,.meme .m-notes{display:none}
+.meme.dance .m-happy,.meme.dance .m-notes{display:inline}
+.meme.dance .m-frown,.meme.dance .m-brows,.meme.dance .m-anger,.meme.dance .m-clang{display:none}
+.meme.dance .meme-card{animation:glitchIn .4s steps(1) both, glitchOut .45s steps(1) 3.95s forwards}
+.meme.dance svg{transform-origin:50% 95%;animation:dance .5s ease-in-out .4s 7}
+.meme.dance .m-stick{animation:wave .5s ease-in-out .4s 7}
+.meme.dance .m-pan{animation:wave2 .5s ease-in-out .4s 7}
+.meme.dance .m-notes text{animation:note 1s ease-out .4s 4;opacity:0}
+.meme.dance .m-notes .n2{animation-delay:.7s}.meme.dance .m-notes .n3{animation-delay:1s}
+@keyframes dance{0%,100%{transform:rotate(-9deg) translateY(0)}25%,75%{transform:rotate(0) translateY(-12px)}50%{transform:rotate(9deg) translateY(0)}}
+@keyframes wave{0%,100%{transform:rotate(-28deg)}50%{transform:rotate(18deg)}}
+@keyframes wave2{0%,100%{transform:rotate(14deg)}50%{transform:rotate(-14deg)}}
+@keyframes note{0%{opacity:0;transform:translateY(8px)}30%{opacity:1}100%{opacity:0;transform:translateY(-18px)}}
+@media (prefers-reduced-motion: reduce){ .meme.dance .meme-card{animation:fadeMeme 4.4s both} .meme.dance svg,.meme.dance .m-stick,.meme.dance .m-pan,.meme.dance .m-notes text{animation:none} .meme.dance .m-notes text{opacity:1} }
+@media (prefers-reduced-motion: reduce){ .meme.play .meme-card{animation:fadeMeme 2.7s both} .meme.play .m-stick,.meme.play .m-pan,.meme.play .m-clang{animation:none} @keyframes fadeMeme{0%,100%{opacity:0}10%,85%{opacity:1}} }
+
+/* ---------- this week's slides + our Padlets ---------- */
+.slides{display:grid;gap:22px}
+.s-head{display:flex;flex-wrap:wrap;gap:14px 28px;justify-content:space-between;align-items:flex-end}
+.s-head > div{display:grid;gap:8px;max-width:60ch}
+.s-head h2{font-size:clamp(32px,4.6vw,48px);font-weight:800;letter-spacing:-.02em}
+.s-head p{color:var(--muted)}
+.s-search{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.s-search input,.s-search select,.tform input,.tform select,.tform textarea{font:inherit;font-size:16px;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;min-width:0}
+.s-search input{width:min(260px,70vw)}
+.s-search input:focus-visible,.s-search select:focus-visible,.tform :is(input,select,textarea):focus-visible{outline:3px solid var(--accent);outline-offset:1px}
+.this-week{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:16px 22px;align-items:center;background:var(--accent);color:var(--accent-ink);border-radius:18px;padding:clamp(16px,3vw,26px)}
+.this-week .wk{font-family:var(--f-display);font-weight:800;line-height:.9;text-align:center}
+.this-week .wk small{display:block;font-size:13px;letter-spacing:.09em;text-transform:uppercase;opacity:.85}
+.this-week .wk span{font-size:clamp(48px,7vw,72px)}
+.this-week h3{font-size:clamp(24px,3.2vw,34px);font-weight:800}
+.this-week p{opacity:.9;margin-top:4px}
+.this-week .open .btn{background:var(--accent-ink);color:var(--accent);border-color:var(--accent-ink)}
+.slide-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:12px}
+.scard{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;display:grid;gap:8px;align-content:start}
+.scard .chip{justify-self:start;font-size:13px;font-weight:700;border-radius:999px;padding:3px 10px;background:var(--ink);color:var(--paper)}
+.scard h3{font-size:20px;font-weight:800}
+.scard p{font-size:15px;color:var(--muted)}
+.scard .open{margin-top:2px}
+.scard .btn{padding:7px 14px;font-size:15px}
+.empty{color:var(--muted);background:var(--card);border:1.5px dashed var(--line);border-radius:14px;padding:18px;text-align:center}
+.padlets{display:grid;gap:14px;border-top:1px solid var(--line);padding-top:22px}
+.padlets h3{font-size:clamp(24px,3vw,30px);font-weight:800}
+.p-head{display:flex;flex-wrap:wrap;gap:12px 20px;justify-content:space-between;align-items:flex-end}
+.p-head > div{display:grid;gap:6px;max-width:60ch}
+.p-head p{color:var(--muted)}
+.padlet-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));gap:10px}
+.pcard{display:grid;grid-template-columns:40px minmax(0,1fr);gap:4px 12px;align-items:center;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px}
+.pcard .av{grid-row:span 2;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-display);font-weight:800;color:#fff}
+.pcard b{font-family:var(--f-display);font-size:17px;overflow-wrap:anywhere}
+.pcard span{font-size:14px;color:var(--muted)}
+.pcard .row{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.pcard .btn{padding:6px 12px;font-size:14.5px}
+.rm{font:inherit;font-size:14px;font-weight:700;border:1.5px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:5px 12px;cursor:pointer}
+.rm.sure{border-color:#B3261E;color:#B3261E}
+.teacher{border:2px dashed var(--accent);border-radius:16px;padding:16px 18px;display:grid;gap:14px;background:var(--accent-soft)}
+.teacher h4{font-family:var(--f-display);font-size:18px;margin:0}
+.teacher .note{font-size:14px;color:var(--muted)}
+.tform{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:10px;align-items:end}
+.tform label{display:grid;gap:4px;font-size:14px;font-weight:700}
+.tform .wide{grid-column:1 / -1}
+.tform textarea{min-height:90px;resize:vertical}
+.tform button{justify-self:start}
+.status{font-size:14.5px;font-weight:700;min-height:1.4em}
+.status.err{color:#B3261E}
+.viewer{position:fixed;inset:0;z-index:60;display:grid;grid-template-rows:auto minmax(0,1fr);background:rgba(10,12,20,.94);color:#fff;
+  padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
+.v-bar{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;padding:12px max(16px,env(safe-area-inset-left,0px))}
+.v-bar b{font-family:var(--f-display);font-size:18px}
+.v-bar span{opacity:.8;font-variant-numeric:tabular-nums}
+.v-btns{margin-left:auto;display:flex;flex-wrap:wrap;gap:8px}
+.v-btns .tbtn{background:#fff;color:#16182B;border-color:#fff}
+.v-btns .tbtn.go{background:#8C9DFF;border-color:#8C9DFF;color:#0E1020}
+.v-btns .tbtn:disabled{opacity:.35}
+.v-stage{display:grid;place-items:center;overflow:auto;padding:0 16px 16px;min-height:0}
+.v-stage canvas,.v-stage img{max-width:100%;max-height:100%;background:#fff;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.v-msg{max-width:46ch;text-align:center;font-size:17px}
+.edit-pill{position:fixed;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:55;font:inherit;font-size:14.5px;font-weight:700;border-radius:999px;padding:9px 16px;border:2px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.18)}
+.edit-pill[aria-pressed="true"]{background:#B3261E;border-color:#B3261E;color:#fff}
+@media (max-width: 640px){ .this-week{grid-template-columns:minmax(0,1fr)} .this-week .wk{text-align:left} }
+</style>
+<template id="pageMarkup"><div class="wrap">
+  <header class="banner">
+    <div>
+      <span class="eyebrow">Art resources</span>
+      <h1>Ms Leong’s Lessons</h1>
+      <p>Interactive art lessons for my students. Pick what you would like to do.</p>
+    </div>
+    <nav class="menu" aria-label="What would you like to do?">
+      <a href="#slides">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="10" y="6" width="32" height="24" rx="3" fill="#E4E8FA" stroke="#16182B" stroke-width="2"></rect><rect x="6" y="11" width="32" height="24" rx="3" fill="#fff" stroke="#16182B" stroke-width="2"></rect><rect x="10" y="15" width="12" height="9" fill="#2340B8"></rect><path d="M25 16 H34 M25 20 H32 M10 28 H30" stroke="#16182B" stroke-width="2" stroke-linecap="round"></path><path d="M22 35 L22 42 M14 42 H30" stroke="#16182B" stroke-width="2.5" stroke-linecap="round"></path></svg>
+        <span><b>Find this week’s slides</b><small>Search by week or topic</small></span>
+      </a>
+      <a href="lab/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M4 6 L24 4 L23 24 L6 25 Z" fill="#2E8B57"></path><circle cx="36" cy="14" r="9" fill="#1B1B1F"></circle><circle cx="37" cy="13" r="5" fill="#6A3D9A"></circle><path d="M4 44 C8 32 18 28 26 32 C20 34 19 40 22 44 Z" fill="#1E3D73"></path><path d="M28 44 L36 30 L44 44 Z" fill="#F4C430"></path></svg>
+        <span><b>Learn about elements of art and principles of design</b><small>Play with real artworks ↗</small></span>
+      </a>
+      <a href="feedback-sandwich/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 20 C6 8 42 8 42 20 L42 22 L6 22 Z" fill="#E8AE48"></path><rect x="5" y="24" width="38" height="4" rx="2" fill="#D9574A"></rect><path d="M4 30 C10 28 14 32 20 30 C26 28 30 32 36 30 C40 29 43 31 44 31 L44 34 L4 34 Z" fill="#5DA56A"></path><path d="M6 36 L42 36 L42 38 C42 44 6 44 6 38 Z" fill="#E8AE48"></path></svg>
+        <span><b>Make a Feedback Sandwich</b><small>Give a friend kind, useful feedback ↗</small></span>
+      </a>
+      <a href="#gacha">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><defs><clipPath id="menuEgg"><path d="M24 4 C37 4 43 24 43 33 C43 42 35 46 24 46 C13 46 5 42 5 33 C5 24 11 4 24 4 Z"></path></clipPath></defs><g clip-path="url(#menuEgg)"><rect x="0" y="0" width="48" height="48" fill="#EC86AE"></rect><path d="M4 18 L9 14 L14 18 L19 14 L24 18 L29 14 L34 18 L39 14 L44 18" fill="none" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"></path><rect x="0" y="34" width="48" height="4" fill="#C2547F"></rect><circle cx="16" cy="27" r="2" fill="#fff"></circle><circle cx="32" cy="27" r="2" fill="#fff"></circle></g><path d="M24 4 C37 4 43 24 43 33 C43 42 35 46 24 46 C13 46 5 42 5 33 C5 24 11 4 24 4 Z" fill="none" stroke="#16182B" stroke-width="2"></path><polyline points="7,24 12,21 17,26 22,21 27,26 32,21 37,26 41,23" fill="none" stroke="#16182B" stroke-width="1.6" stroke-linejoin="round"></polyline><ellipse cx="17" cy="13" rx="3" ry="5" fill="#fff" opacity=".5" transform="rotate(25 17 13)"></ellipse></svg>
+        <span><b>Pick a Mystery Egg</b><small>A quick warm-up drawing</small></span>
+      </a>
+    </nav>
+  </header>
+
+  <section class="gacha" id="gacha" aria-labelledby="gacha-h">
+    <div class="g-head">
+      <div>
+        <span class="eyebrow">Warm-up transition · 3 to 5 minutes</span>
+        <h2 id="gacha-h">Pick a Mystery Egg</h2>
+        <p>Can’t decide what to draw? Pick a mystery egg and crack it open. Inside is one thing to draw and one art idea to try. Sketch it quickly. It doesn’t need to be perfect or finished.</p>
+      </div>
+      <div class="g-side">
+        <div class="open"><button class="tbtn" id="soundBtn" type="button" aria-pressed="true">Sound: on</button><button class="tbtn" id="bigBtn" type="button">Show on the big screen</button></div>
+      </div>
+    </div>
+    <div class="g-body">
+      <div class="shelf">
+        <div class="boxgrid" id="boxgrid" role="group" aria-label="Mystery eggs"></div>
+        <p class="shelf-note" id="shelfNote">Pick a mystery egg to crack it open.</p>
+        <button class="again" id="againBtn" type="button" hidden="">Pick another egg</button>
+      </div>
+      <div class="results" aria-live="polite">
+        <div class="cap topic" id="capTopic">
+          <span class="cap-label">Draw</span>
+          <strong id="rTopic">?</strong>
+          <span class="cap-note" id="rTopicNote">Crack an egg to find out.</span>
+          <button class="swap" id="swapTopic" type="button" hidden="">Swap topic</button>
+        </div>
+        <div class="cap focus" id="capFocus">
+          <span class="cap-label">Try</span>
+          <span class="kind-chip" id="rKind" hidden="">Principle of design</span>
+          <strong id="rFocus">?</strong>
+          <span class="cap-note" id="rFocusNote">Crack an egg to find out.</span>
+          <button class="swap" id="swapFocus" type="button" hidden="">Swap art idea</button>
+        </div>
+      </div>
+    </div>
+    <div class="meme" id="meme" hidden="" aria-hidden="true">
+      <div class="meme-card">
+        <div class="meme-cap" id="memeCap">Start drawing now!</div>
+        <svg viewBox="0 0 140 112">
+          <g class="m-clang" stroke="#F4C430" stroke-width="3.5" stroke-linecap="round"><path d="M10 12 L3 5 M24 9 L23 1 M7 26 L0 25 M44 12 L50 5"></path></g>
+          <g class="m-pan"><line x1="38" y1="44" x2="52" y2="62" stroke="#3A3F4A" stroke-width="5" stroke-linecap="round"></line><circle cx="26" cy="32" r="17" fill="#6B7280" stroke="#16182B" stroke-width="3"></circle><circle cx="26" cy="32" r="11" fill="#9AA1AE"></circle><ellipse cx="21" cy="27" rx="4" ry="2.5" fill="#fff" opacity=".6"></ellipse></g>
+          <circle cx="50" cy="46" r="9" fill="#E8A85C" stroke="#16182B" stroke-width="3"></circle><circle cx="50" cy="46" r="4.5" fill="#F2A7B5"></circle>
+          <circle cx="94" cy="46" r="9" fill="#E8A85C" stroke="#16182B" stroke-width="3"></circle><circle cx="94" cy="46" r="4.5" fill="#F2A7B5"></circle>
+          <ellipse cx="72" cy="75" rx="36" ry="31" fill="#E8A85C" stroke="#16182B" stroke-width="3"></ellipse>
+          <ellipse cx="72" cy="85" rx="21" ry="18" fill="#F7E3C4"></ellipse>
+          <ellipse cx="58" cy="105" rx="8" ry="4" fill="#F2A7B5" stroke="#16182B" stroke-width="2"></ellipse><ellipse cx="86" cy="105" rx="8" ry="4" fill="#F2A7B5" stroke="#16182B" stroke-width="2"></ellipse>
+          <ellipse cx="52" cy="64" rx="7" ry="5" fill="#E8A85C" stroke="#16182B" stroke-width="2.5"></ellipse>
+          <circle cx="62" cy="63" r="3.6" fill="#16182B"></circle><circle cx="82" cy="63" r="3.6" fill="#16182B"></circle>
+          <path class="m-brows" d="M54 52 L67 58 M90 52 L77 58" stroke="#16182B" stroke-width="3.5" stroke-linecap="round"></path>
+          <ellipse cx="56" cy="73" rx="5" ry="3" fill="#F2A7B5"></ellipse><ellipse cx="88" cy="73" rx="5" ry="3" fill="#F2A7B5"></ellipse>
+          <path d="M70 69 L74 69 L72 72 Z" fill="#E77B8E"></path>
+          <path class="m-frown" d="M65 80 Q72 73 79 80" fill="none" stroke="#16182B" stroke-width="2.5" stroke-linecap="round"></path><path class="m-happy" d="M63 76 Q72 87 81 76 Z" fill="#B5465A" stroke="#16182B" stroke-width="2.2" stroke-linejoin="round"></path>
+          <path d="M60 73 L46 71 M60 76 L46 78 M84 73 L98 71 M84 76 L98 78" stroke="#16182B" stroke-width="1.4" stroke-linecap="round"></path>
+          <path class="m-anger" d="M104 24 Q108 30 114 28 M114 36 Q108 34 106 40 M100 32 Q104 30 102 24" stroke="#D7322B" stroke-width="3" fill="none" stroke-linecap="round"></path><g class="m-notes" fill="#2340B8" font-family="Georgia, serif" font-weight="700"><text class="n1" x="112" y="40" font-size="20">♪</text><text class="n2" x="8" y="70" font-size="18">♫</text><text class="n3" x="120" y="78" font-size="16">♪</text></g>
+          <g class="m-stick"><line x1="88" y1="64" x2="88" y2="6" stroke="#8B5A2B" stroke-width="5" stroke-linecap="round"></line><circle cx="88" cy="6" r="5.5" fill="#C98B4E" stroke="#16182B" stroke-width="2"></circle><ellipse cx="88" cy="64" rx="7" ry="5" fill="#E8A85C" stroke="#16182B" stroke-width="2.5"></ellipse></g>
+        </svg>
+      </div>
+    </div>
+    <div class="g-tools">
+      <div class="pools" role="group" aria-label="Art ideas to include">
+        <span class="eyebrow">Art ideas from</span>
+        <label for="pE"><input type="checkbox" id="pE" checked="">Elements of art</label>
+        <label for="pP"><input type="checkbox" id="pP" checked="">Principles of design</label>
+        <label for="pT"><input type="checkbox" id="pT" checked="">Art techniques</label>
+      </div>
+      <div class="timer-card" id="timerCard" role="group" aria-label="Sketch timer">
+        <div class="tc-top"><svg class="alarm" viewBox="0 0 48 48" aria-hidden="true"><path d="M6 13 A8 8 0 0 1 17 5" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"></path><path d="M42 13 A8 8 0 0 0 31 5" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"></path><path d="M13 42 L10 46 M35 42 L38 46" stroke="currentColor" stroke-width="4" stroke-linecap="round"></path><circle cx="24" cy="26" r="17" fill="#F4C430" stroke="currentColor" stroke-width="3.5"></circle><circle cx="24" cy="26" r="12" fill="#fff"></circle><path d="M24 18 L24 26 L30 30" fill="none" stroke="#16182B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></svg><span class="clock" id="clock" role="timer" aria-live="off">4:00</span></div>
+        <div class="seg" role="group" aria-label="Timer length">
+          <button type="button" data-min="3" aria-pressed="false">3 min</button>
+          <button type="button" data-min="4" aria-pressed="true">4 min</button>
+          <button type="button" data-min="5" aria-pressed="false">5 min</button>
+        </div>
+        <div class="tc-btns"><button class="tbtn go" id="tStart" type="button">Start</button><button class="tbtn" id="tEnd" type="button" disabled="">End now</button><button class="tbtn" id="tReset" type="button">Reset</button></div>
+          <span class="go-label" id="goLabel" aria-live="polite"></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="slides" id="slides" aria-labelledby="slides-h">
+    <header class="s-head">
+      <div>
+        <span class="eyebrow">Lesson slides</span>
+        <h2 id="slides-h">This week’s slides</h2>
+        <p>Open this week’s lesson slides, or find an earlier week by number or topic.</p>
+      </div>
+      <div class="s-search" role="search">
+        <input id="slideSearch" type="search" placeholder="Search a week or topic" aria-label="Search slides by week or topic">
+        <select id="weekFilter" aria-label="Choose a week"><option value="">All weeks</option></select>
+      </div>
+    </header>
+    <div id="thisWeek"></div>
+    <div class="slide-list" id="slideList"></div>
+    <p class="empty" id="slidesEmpty" hidden="">No slides yet. Ms Leong will add them here each week.</p>
+
+    <div class="teacher" id="slideTools" hidden="">
+      <h4>Add slides <span class="note">· Only you can see this.</span></h4>
+      <form class="tform" id="slideForm">
+        <label for="sWeek">Week<input id="sWeek" type="number" min="1" max="60" required=""></label>
+        <label for="sTopic">Topic<input id="sTopic" type="text" maxlength="80" required="" placeholder="e.g. Elements of art: line"></label>
+        <label for="sLink">Link to slides<input id="sLink" type="url" placeholder="https://docs.google.com/…"></label>
+        <label for="sFile">Or upload a PDF or image<input id="sFile" type="file" accept=".pdf,image/png,image/jpeg,image/webp,image/gif"></label>
+        <label for="sNote" class="wide">Note for students (optional)<input id="sNote" type="text" maxlength="140" placeholder="e.g. Bring a pencil and eraser"></label>
+        <button class="tbtn go" type="submit">Add these slides</button>
+      </form>
+      <p class="note">Google Slides and Drive links work best. Set them to “Anyone with the link can view.” PowerPoint files can’t be uploaded here, so share those as a link.</p>
+      <p class="status" id="slideStatus" aria-live="polite"></p>
+    </div>
+
+    <div class="padlets">
+      <div class="p-head">
+        <div>
+          <h3>Our Padlets</h3>
+          <p>Everyone’s Padlet portfolios in one place. To add yours, fill in your name, class and Padlet link on the class sheet. Ms Leong will add it here.</p>
+        </div>
+        <div class="s-search">
+          <input id="padletSearch" type="search" placeholder="Search a name or class" aria-label="Search Padlets by name or class">
+          <a class="btn" id="submitBoard" href="#" target="_blank" rel="noopener" hidden="">Add your Padlet link to the sheet ↗</a>
+        </div>
+      </div>
+      <div class="padlet-list" id="padletList"></div>
+      <p class="empty" id="padletsEmpty" hidden="">No Padlets yet.</p>
+
+      <div class="teacher" id="padletTools" hidden="">
+        <h4>Add students’ Padlets <span class="note">· Only you can see this.</span></h4>
+        <p class="note">Students fill in the sign-up sheet. Copy its rows and paste them below: new students are added and changed links are updated, with no repeats. This page can be opened by anyone with the link, so use first names and class only.</p>
+        <form class="tform" id="padletForm">
+          <label for="pName">Name<input id="pName" type="text" maxlength="40" required="" placeholder="e.g. Wei Ling"></label>
+          <label for="pClass">Class<input id="pClass" type="text" maxlength="12" placeholder="e.g. 2R"></label>
+          <label for="pLink" class="wide">Padlet link<input id="pLink" type="url" required="" placeholder="https://padlet.com/…"></label>
+          <button class="tbtn go" type="submit">Add Padlet</button>
+        </form>
+        <form class="tform" id="bulkForm">
+          <label for="pBulk" class="wide">Paste rows from the sheet: Name, Class, Padlet link<textarea id="pBulk" placeholder="Copy the rows from your sheet and paste them here, or type one per line:
+Wei Ling, 2R, https://padlet.com/…"></textarea></label>
+          <button class="tbtn go" type="submit">Update Padlets from sheet</button>
+        </form>
+        <form class="tform" id="boardForm">
+          <label for="pBoard" class="wide">Sign-up sheet link (Excel online or Google Sheets, shared so students can edit)<input id="pBoard" type="url" placeholder="https://…"></label>
+          <button class="tbtn" type="submit">Save sheet link</button>
+        </form>
+        <p class="status" id="padletStatus" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="resources" aria-labelledby="res-h">
+    <h2 id="res-h" class="eyebrow">All resources</h2>
+
+    <article class="res">
+      <div class="art">
+        <svg viewBox="0 0 240 180" aria-hidden="true">
+          <rect x="6" y="6" width="228" height="168" fill="#FFFFFF"></rect>
+          <path d="M18 18 L104 14 L102 74 L22 78 Z" fill="#2E8B57"></path>
+          <path d="M112 16 L158 18 L156 96 L114 92 Z" fill="#D7322B"></path>
+          <circle cx="198" cy="50" r="28" fill="#1B1B1F"></circle><circle cx="201" cy="47" r="16" fill="#6A3D9A"></circle>
+          <path d="M18 166 C26 120 66 92 110 104 C90 112 84 136 100 166 Z" fill="#1E3D73"></path>
+          <path d="M120 166 L150 112 L180 166 Z" fill="#F4C430"></path>
+          <path d="M150 70 L228 150" stroke="#1B1B1F" stroke-width="3"></path>
+          <path d="M196 120 L204 106 L212 120 L220 106" fill="none" stroke="#F6CF2E" stroke-width="4" stroke-linejoin="round"></path>
+        </svg>
+      </div>
+      <div class="body">
+        <span class="eyebrow">Explore and make</span>
+        <h3>Elements &amp; Principles Lab</h3>
+        <p>Students pick an element of art or a principle of design and watch it appear on a real artwork, then change the artwork to see why it works.</p>
+        <ul>
+          <li>Four artworks: Monet’s <em>Impression, Sunrise</em>, Van Gogh’s <em>The Starry Night</em>, Kandinsky’s <em>Composition VIII</em> and Hokusai’s <em>The Great Wave</em></li>
+          <li>Students can switch between our drawn study and a photo of the real painting</li>
+          <li>“Still or moving?” compares balanced and unbalanced compositions on a balance scale</li>
+          <li>A composition studio with challenges, plus a quick quiz</li>
+        </ul>
+        <div class="tags"><span>Elements of art</span><span>Principles of design</span><span>Art history</span></div>
+        <div class="open">
+          <a class="btn" href="lab/" target="_blank" rel="noopener">Open the lab ↗</a>
+          <a class="btn ghost" href="lab/#compare" target="_blank" rel="noopener">Still or moving? ↗</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="res">
+      <div class="art">
+        <svg viewBox="0 0 240 180" aria-hidden="true">
+          <path d="M40 70 C40 30 200 30 200 70 L200 78 L40 78 Z" fill="#E8AE48"></path>
+          <ellipse cx="90" cy="52" rx="5" ry="3" fill="#FFF2D6"></ellipse><ellipse cx="124" cy="44" rx="5" ry="3" fill="#FFF2D6"></ellipse><ellipse cx="156" cy="54" rx="5" ry="3" fill="#FFF2D6"></ellipse>
+          <rect x="34" y="84" width="172" height="10" rx="4" fill="#D9574A"></rect>
+          <path d="M30 98 C50 92 60 106 80 98 C100 90 110 106 130 98 C150 90 160 106 180 98 C196 92 204 102 210 100 L210 112 L30 112 Z" fill="#5DA56A"></path>
+          <path d="M40 118 L200 118 L200 128 C200 146 40 146 40 128 Z" fill="#E8AE48"></path>
+        </svg>
+      </div>
+      <div class="body">
+        <span class="eyebrow">Peer feedback</span>
+        <h3>Feedback Sandwich</h3>
+        <p>Students build feedback on a friend’s artwork in three layers: a specific strength, something to improve with a solution, and encouragement. It guides them with the elements and principles and nudges them away from vague or unkind words.</p>
+        <ul>
+          <li>Sentence starters and “look closely” questions for each element and principle</li>
+          <li>Copies the finished feedback and opens the class Padlet to post it</li>
+        </ul>
+        <div class="tags"><span>Peer feedback</span><span>Elements of art</span><span>Principles of design</span></div>
+        <div class="open">
+          <a class="btn" href="feedback-sandwich/" target="_blank" rel="noopener">Open Feedback Sandwich ↗</a>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <div class="viewer" id="viewer" hidden="" role="dialog" aria-modal="true" aria-labelledby="vTitle">
+    <div class="v-bar">
+      <b id="vTitle"></b><span id="vPage"></span>
+      <div class="v-btns"><button class="tbtn" id="vPrev" type="button">← Back</button><button class="tbtn" id="vNext" type="button">Next →</button><button class="tbtn" id="vFull" type="button">Full screen</button><button class="tbtn go" id="vClose" type="button">Close</button></div>
+    </div>
+    <div class="v-stage" id="vStage"><canvas id="vCanvas"></canvas><img id="vImg" alt="" hidden=""><p class="v-msg" id="vMsg"></p></div>
+  </div>
+
+  <button class="edit-pill" id="editToggle" type="button" aria-pressed="false" hidden="">Edit mode: off</button>
+
+  <footer>Made by Ms Leong with Claude. New resources will be added to this page.</footer>
+</div>
+</template>
+<div id="app"></div>
+<script type="application/json" id="hubData">{"slides":[{"id":"mvewbuz5rbn84","week":1,"topic":"branding","note":"","link":"https://drive.google.com/file/d/1sBTbqoIsRTkhR4pzC4GduEI5ojXFrQBN/view","file":null,"added":1792392690065}],"padlets":[{"id":"mvexngncgridy","name":"Ai Generator Padlet","klass":"1E","url":"https://padlet.com/yongyuleong/sec-1e-ai-generator-bf6w7kttgl5nuh6r"}],"submitLink":"https://docs.google.com/spreadsheets/d/1Bjx4PIYUkweGR3SaPOlMVKzcOlExJrVqYhbHIJCaGD0/edit"}</script>
+<script id="hubMain">/* the page's markup is served inside <template id="pageMarkup"> so the page can rebuild itself when Ms Leong saves */
+document.getElementById('app').appendChild(document.getElementById('pageMarkup').content.cloneNode(true));
+const HEAD_PRE = "<meta charset=\"utf-8\">\n<title>Ms Leong\u2019s Lessons<\/title>\n<meta name=\"claude:viewport-fit-sides\" content=\"cover\">\n<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&display=swap\">\n";
+const TOPICS = ['Breakfast','My shoe','A sleeping cat','A rainy day','Kaya toast','Bubble tea','My school bag','A bicycle','A goldfish','An umbrella','A potted plant','A cup of hot chocolate','A slice of watermelon','My hand','A sandwich','A friendly robot','A cloud with a face','A desk lamp','A bowl of fruit','A bird on a wire','A funny hat','A key','A teapot','A slice of cake','A balloon','A snail','A cactus','Chopsticks and a bowl','The view from a window','A paper boat','An ice cream cone','A toothbrush','A chair','A mushroom','The moon','A kite','My pencil case','An MRT train','A durian','A rubber duck','A pair of glasses','A pineapple','A jellyfish','A lighthouse','A doughnut','A leaf','A sunflower','A toy dinosaur','A bowl of noodles','My favourite snack'];
+const FOCUS = [
+  ['E','Line','Draw it using only lines. No shading, no filled-in areas.'],
+  ['E','Thick and thin lines','Use at least one very thick line and one very thin line.'],
+  ['E','Geometric shapes','Build it only from circles, squares, rectangles and triangles.'],
+  ['E','Organic shapes','Make every shape soft, wobbly and natural. No straight edges.'],
+  ['E','Form','Make it look 3D. Pick where the light comes from and shade the other side.'],
+  ['E','Value','Use three values: one light, one middle and one dark.'],
+  ['E','Warm colors','Use only warm colors: red, orange and yellow. No colors? Label where they would go.'],
+  ['E','Cool colors','Use only cool colors: blue, green and purple. No colors? Label where they would go.'],
+  ['E','Space','Draw it small and leave lots of empty space around it.'],
+  ['E','Texture','Show at least three different textures, like rough, smooth and fuzzy.'],
+  ['P','Symmetry','Make both halves match like a mirror image.'],
+  ['P','Asymmetrical balance','Put one big thing on one side and a few small things on the other.'],
+  ['P','Contrast','Put something very dark right next to something very light.'],
+  ['P','Emphasis','Give it one clear focal point. Make that part bigger, darker or more detailed.'],
+  ['P','Movement','Make it look like it is moving: add a tilt, swirls or speed lines.'],
+  ['P','Pattern','Fill part of your drawing with a repeated pattern.'],
+  ['P','Rhythm','Repeat one shape at least five times, changing its size each time.'],
+  ['P','Unity','Make everything belong together by repeating one shape or kind of line.'],
+  ['P','Variety','Use as many different kinds of lines and shapes as you can.'],
+  ['P','Proportion','Exaggerate! Make one part far too big or far too small.'],
+  ['P','Harmony','Keep everything gentle and matching: similar shapes and soft lines.'],
+  ['P','Disharmony','Make one part clash on purpose: a different style, size or kind of line.'],
+  ['T','Hatching','Shade only with parallel lines.'],
+  ['T','Cross-hatching','Shade with lines that cross. More layers make it darker.'],
+  ['T','Stippling','Shade only with dots. More dots make it darker.'],
+  ['T','Contour line','Draw just the outline, slowly, in one careful line.'],
+  ['T','Blind contour','Look only at the object, not at your paper, while you draw. No peeking!'],
+  ['T','Continuous line','Do not lift your pencil until you have finished.'],
+  ['T','Gesture drawing','Draw it fast and loose in 60 seconds, then add details.'],
+  ['T','Silhouette','Fill the whole shape in dark, with no details inside.'],
+  ['T','Scribble shading','Shade with loose scribbles. Tighter scribbles make it darker.'],
+  ['T','Negative space','Draw the empty space around the object instead of the object.'],
+  ['T','Other hand','Draw with the hand you do not usually write with.'],
+  ['T','Zoom in','Draw only a close-up of one small part, very big.'],
+  ['T','Pattern fill','Split the shape into sections and fill each one with a different pattern.']
+];
+const KIND = {E:['Element of art','#2E8B57'], P:['Principle of design','#2340B8'], T:['Art technique','#C2561A']};
+const $ = s => document.querySelector(s);
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* draw without repeats until the whole list has been used */
+function bag(items){ let pool = []; return () => { if (!pool.length) pool = items.slice().sort(() => Math.random() - .5); return pool.pop(); }; }
+let nextTopic = bag(TOPICS), nextFocus = makeFocusBag();
+function pools(){ return ['E','P','T'].filter(k => $('#p'+k).checked); }
+function makeFocusBag(){ const on = ['E','P','T'].filter(k => { const el = document.getElementById('p'+k); return !el || el.checked; }); return bag(FOCUS.filter(f => on.includes(f[0]))); }
+['E','P','T'].forEach(k => $('#p'+k).addEventListener('change', e => {
+  if (!pools().length) e.target.checked = true;
+  nextFocus = makeFocusBag();
+}));
+
+function pop(el){ el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); }
+function showTopic(){ $('#rTopic').textContent = nextTopic(); $('#rTopicNote').textContent = 'Keep it simple. Big shapes first, details last.'; $('#swapTopic').hidden = false; pop($('#capTopic')); }
+function showFocus(){
+  const [k, name, tip] = nextFocus();
+  $('#rFocus').textContent = name; $('#rFocusNote').textContent = tip;
+  $('#rKind').textContent = KIND[k][0]; $('#capFocus').style.setProperty('--kind', KIND[k][1]);
+  $('#rKind').hidden = false; $('#swapFocus').hidden = false;
+  pop($('#capFocus'));
+}
+/* back to mystery: nothing shows until the next egg is cracked */
+function hideResults(){
+  $('#rTopic').textContent = '?'; $('#rTopicNote').textContent = 'Crack an egg to find out.';
+  $('#rFocus').textContent = '?'; $('#rFocusNote').textContent = 'Crack an egg to find out.';
+  $('#rKind').hidden = true; $('#swapTopic').hidden = true; $('#swapFocus').hidden = true;
+  $('#capFocus').style.setProperty('--kind', '#9A9DB0');
+}
+/* ---------- box-opening sounds, made in the browser (no audio files) ---------- */
+let ac = null, nbuf = null, soundOn = true;
+function audio(){
+  if (!ac){ try { ac = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return null; } }
+  if (ac.state === 'suspended') ac.resume();
+  if (!nbuf){ nbuf = ac.createBuffer(1, ac.sampleRate, ac.sampleRate); const d = nbuf.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random()*2 - 1; }
+  return ac;
+}
+function env(g, t0, peak, attack, dur){ g.gain.setValueAtTime(.0001, t0); g.gain.exponentialRampToValueAtTime(peak, t0 + attack); g.gain.exponentialRampToValueAtTime(.0001, t0 + dur); }
+function noise(t, dur, o){
+  const a = audio(); if (!a || !soundOn) return;
+  const t0 = a.currentTime + t, src = a.createBufferSource(), f = a.createBiquadFilter(), g = a.createGain();
+  src.buffer = nbuf; f.type = o.type; f.Q.value = o.q || 1; f.frequency.setValueAtTime(o.f, t0);
+  if (o.f2) f.frequency.exponentialRampToValueAtTime(o.f2, t0 + dur);
+  env(g, t0, o.gain, o.attack || .004, dur);
+  src.connect(f).connect(g).connect(a.destination); src.start(t0, Math.random()*.5); src.stop(t0 + dur + .05);
+}
+function tone(t, dur, f1, f2, peak){
+  const a = audio(); if (!a || !soundOn) return;
+  const t0 = a.currentTime + t, o = a.createOscillator(), g = a.createGain();
+  o.frequency.setValueAtTime(f1, t0); o.frequency.exponentialRampToValueAtTime(f2, t0 + dur);
+  env(g, t0, peak, .005, dur); o.connect(g).connect(a.destination); o.start(t0); o.stop(t0 + dur + .05);
+}
+const sfx = {
+  tap(t){ noise(t, .08, {type:'lowpass', f:650, gain:.5}); tone(t, .09, 150, 85, .22); },          /* cardboard knock */
+  shake(){ [0, .13, .26, .39, .52].forEach(t => sfx.tap(t)); },
+  tape(t){ for (let i = 0; i < 16; i++) noise(t + i*.021 + Math.random()*.008, .028, {type:'bandpass', f:2000 + Math.random()*2600, q:2.2, gain:.16}); }, /* tape peeling */
+  pop(t){ tone(t, .18, 230, 68, .42); noise(t, .05, {type:'highpass', f:1600, gain:.18}); },          /* lid pops off */
+  rustle(t){ for (let i = 0; i < 9; i++) noise(t + i*.045, .09, {type:'highpass', f:2600 + Math.random()*2600, gain:.05 + Math.random()*.05}); }, /* tissue paper */
+  sparkle(t){ [1568, 2093, 2637].forEach((f, i) => tone(t + i*.07, .3, f, f*1.01, .045)); },
+  crack(t){ for (let i = 0; i < 6; i++) noise(t + i*.035 + Math.random()*.015, .025, {type:'bandpass', f:3200 + Math.random()*2500, q:3, gain:.28}); tone(t, .05, 1900, 1200, .06); },  /* eggshell cracking */
+  slide(t){ noise(t, .26, {type:'bandpass', f:550, f2:1700, q:1.4, gain:.13, attack:.08}); }         /* card slides out */
+};
+$('#soundBtn').addEventListener('click', () => {
+  soundOn = !soundOn; $('#soundBtn').textContent = soundOn ? 'Sound: on' : 'Sound: off'; $('#soundBtn').setAttribute('aria-pressed', soundOn);
+  if (soundOn) sfx.tap(0);
+});
+
+/* ---------- mystery eggs ---------- */
+const BOX_COLORS = [['#F4C430','#C99A12'],['#EC86AE','#C2547F'],['#2E8B57','#1F6A41'],['#6E93BF','#2340B8'],['#EE7A22','#B85A12'],['#B79AE0','#6A3D9A']];
+const EGG_D = 'M60,8 C92,8 108,58 108,86 C108,116 86,134 60,134 C34,134 12,116 12,86 C12,58 28,8 60,8 Z';
+const ZIG = [[0,70],[12,70],[24,62],[36,74],[48,62],[60,74],[72,62],[84,74],[96,62],[108,72],[120,70]];
+function eggSVG([c, d], i){
+  const zig = ZIG.map(p => p.join(',')).join(' ');
+  const top = `0,0 120,0 ${ZIG.slice().reverse().map(p => p.join(',')).join(' ')}`;
+  const bot = `${zig} 120,140 0,140`;
+  const deco = [
+    `<circle cx="38" cy="44" r="5" fill="#fff" opacity=".8"/><circle cx="66" cy="34" r="4" fill="#fff" opacity=".8"/><circle cx="84" cy="52" r="5" fill="#fff" opacity=".8"/><circle cx="34" cy="100" r="4" fill="#fff" opacity=".8"/><circle cx="62" cy="112" r="5" fill="#fff" opacity=".8"/><circle cx="88" cy="100" r="4" fill="#fff" opacity=".8"/>`,
+    `<rect x="0" y="40" width="120" height="9" fill="${d}"/><rect x="0" y="96" width="120" height="9" fill="${d}"/><rect x="0" y="108" width="120" height="4" fill="#fff" opacity=".7"/>`,
+    `<path d="M10,48 L22,40 L34,48 L46,40 L58,48 L70,40 L82,48 L94,40 L106,48" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round" opacity=".85"/><path d="M10,104 L22,96 L34,104 L46,96 L58,104 L70,96 L82,104 L94,96 L106,104" fill="none" stroke="${d}" stroke-width="5" stroke-linejoin="round"/>`
+  ][i % 3];
+  const shell = `<path d="${EGG_D}" fill="${c}"/>${deco}<path d="${EGG_D}" fill="none" stroke="#16182B" stroke-width="3"/>`;
+  const rays = [-60,-30,0,30,60].map(a => { const r = a*Math.PI/180; return `<line x1="${(60+Math.sin(r)*16).toFixed(1)}" y1="${(68-Math.cos(r)*16).toFixed(1)}" x2="${(60+Math.sin(r)*40).toFixed(1)}" y2="${(68-Math.cos(r)*40).toFixed(1)}" stroke="#F4C430" stroke-width="5" stroke-linecap="round"/>`; }).join('');
+  return `<svg viewBox="0 0 120 140" aria-hidden="true">
+    <defs><clipPath id="eggTop${i}"><polygon points="${top}"/></clipPath><clipPath id="eggBot${i}"><polygon points="${bot}"/></clipPath><clipPath id="eggAll${i}"><path d="${EGG_D}"/></clipPath></defs>
+    <ellipse cx="60" cy="136" rx="34" ry="4" fill="#16182B" opacity=".18"/>
+    <g class="burst">${rays}<circle cx="24" cy="36" r="3.5" fill="#F4C430"/><circle cx="98" cy="30" r="4" fill="#F4C430"/></g>
+    <g clip-path="url(#eggBot${i})"><g clip-path="url(#eggAll${i})">${shell}</g><path d="${EGG_D}" fill="none" stroke="#16182B" stroke-width="3"/></g>
+    <g class="lid"><g clip-path="url(#eggTop${i})"><g clip-path="url(#eggAll${i})">${shell}</g><path d="${EGG_D}" fill="none" stroke="#16182B" stroke-width="3"/><ellipse cx="42" cy="34" rx="8" ry="14" fill="#fff" opacity=".45" transform="rotate(25 42 34)"/></g></g>
+    <polyline class="crack" points="${ZIG.slice(1,-1).map(p => p.join(',')).join(' ')}" fill="none" stroke="#16182B" stroke-width="2.5" stroke-linejoin="round"/>
+  </svg>`;
+}
+function renderBoxes(){
+  const cols = BOX_COLORS.slice().sort(() => Math.random() - .5);
+  $('#boxgrid').innerHTML = cols.map((c, i) => `<button class="mbox" type="button" aria-label="Crack open mystery egg ${i+1}">${eggSVG(c, i)}</button>`).join('');
+  $('#boxgrid').querySelectorAll('.mbox').forEach(b => b.addEventListener('click', () => openBox(b)));
+  $('#againBtn').hidden = true; $('#shelfNote').textContent = 'Pick a mystery egg to crack it open.';
+}
+function openBox(btn){
+  audio();
+  const eggs = [...$('#boxgrid').querySelectorAll('.mbox')];
+  eggs.forEach(b => { b.disabled = true; if (b !== btn) b.classList.add('dim'); });
+  $('#shelfNote').textContent = 'Wobble, wobble…';
+  btn.classList.add('shake');
+  [0, .38, .76, 1.14].forEach(t => sfx.tap(t));
+  setTimeout(() => { $('#shelfNote').textContent = 'Crack…'; }, 1500);
+  sfx.crack(1.55); setTimeout(() => btn.classList.add('cracked'), 1550);
+  sfx.crack(2.0);
+  setTimeout(() => { btn.classList.remove('shake'); btn.classList.add('open'); }, 2450);
+  sfx.pop(2.45); sfx.sparkle(2.55); sfx.rustle(2.65); sfx.slide(2.95); sfx.slide(3.35);
+  setTimeout(showTopic, 3000);
+  setTimeout(() => { showFocus(); $('#shelfNote').textContent = 'Swap one if you need to, then start sketching.'; $('#againBtn').hidden = false; }, 3400);
+}
+$('#againBtn').addEventListener('click', () => { sfx.rustle(0); hideResults(); renderBoxes(); });
+hideResults();
+renderBoxes();
+
+$('#swapTopic').addEventListener('click', () => { sfx.slide(0); showTopic(); });
+$('#swapFocus').addEventListener('click', () => { sfx.slide(0); showFocus(); });
+
+/* big screen: fullscreen where allowed, larger text either way */
+$('#bigBtn').addEventListener('click', async () => {
+  const g = $('#gacha'), on = !g.classList.contains('big');
+  g.classList.toggle('big', on); $('#bigBtn').textContent = on ? 'Back to normal size' : 'Show on the big screen';
+  try { if (on && g.requestFullscreen) await g.requestFullscreen(); else if (!on && document.fullscreenElement) await document.exitFullscreen(); } catch (e) {}
+});
+document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement && $('#gacha').classList.contains('big')){ $('#gacha').classList.remove('big'); $('#bigBtn').textContent = 'Show on the big screen'; } });
+
+/* sketch timer */
+let minutes = 4, left = 240, tick = null;
+const fmt = s => `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+function paint(){ const e = document.getElementById('tEnd'); if (e) e.disabled = !(left > 0 && (tick || left < minutes*60)); $('#clock').textContent = left > 0 ? fmt(left) : 'Pencils down!'; $('#clock').classList.toggle('done', left <= 0); $('#timerCard').classList.toggle('ringing', left <= 0); }
+function chime(){ try { const ac = new (window.AudioContext || window.webkitAudioContext)(); [0, .25, .5].forEach((t, i) => { const o = ac.createOscillator(), g = ac.createGain(); o.frequency.value = [660, 784, 988][i]; g.gain.setValueAtTime(.0001, ac.currentTime + t); g.gain.exponentialRampToValueAtTime(.25, ac.currentTime + t + .02); g.gain.exponentialRampToValueAtTime(.0001, ac.currentTime + t + .4); o.connect(g).connect(ac.destination); o.start(ac.currentTime + t); o.stop(ac.currentTime + t + .45); }); } catch (e) {} }
+function stop(){ clearInterval(tick); tick = null; $('#timerCard').classList.remove('running'); $('#tStart').textContent = left > 0 && left < minutes*60 ? 'Resume' : 'Start'; }
+/* gentle music-box ringtone when the timer starts: a soft rising tune, each note a quiet bell that fades */
+function startSound(){
+  const a = audio(); if (!a || !soundOn) return;
+  const notes = [[0,659.3],[.2,784],[.4,1046.5],[.6,1318.5],[.85,1174.7],[1.1,1046.5]];
+  notes.forEach(([t, hz], i) => {
+    const t0 = a.currentTime + .03 + t, len = i === notes.length - 1 ? 1.6 : .9;
+    [[hz, .09, 'sine'], [hz*2, .025, 'sine'], [hz*3, .01, 'triangle']].forEach(([f, peak, type]) => {
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = type; o.frequency.value = f;
+      g.gain.setValueAtTime(.0001, t0); g.gain.exponentialRampToValueAtTime(peak, t0 + .015); g.gain.exponentialRampToValueAtTime(.0001, t0 + len);
+      o.connect(g).connect(a.destination); o.start(t0); o.stop(t0 + len + .05);
+    });
+  });
+}
+/* angry hamster meme on Start: glitch in, five pan bangs, glitch out */
+function clang(t){
+  const a = audio(); if (!a || !soundOn) return;
+  const t0 = a.currentTime + t;
+  [[620,.11],[1711,.06],[3348,.035],[5537,.018]].forEach(([f, peak]) => {
+    const o = a.createOscillator(), g = a.createGain();
+    o.type = 'sine'; o.frequency.setValueAtTime(f*1.012, t0); o.frequency.exponentialRampToValueAtTime(f, t0 + .05);
+    g.gain.setValueAtTime(.0001, t0); g.gain.exponentialRampToValueAtTime(peak, t0 + .003); g.gain.exponentialRampToValueAtTime(.0001, t0 + .55);
+    o.connect(g).connect(a.destination); o.start(t0); o.stop(t0 + .6);
+  });
+  noise(t, .05, {type:'highpass', f:2500, gain:.1});
+}
+function glitchSound(t){
+  noise(t, .16, {type:'bandpass', f:1400, q:.8, gain:.09});
+  const a = audio(); if (!a || !soundOn) return;
+  const t0 = a.currentTime + t, o = a.createOscillator(), g = a.createGain();
+  o.type = 'square'; o.frequency.setValueAtTime(900, t0); o.frequency.setValueAtTime(300, t0 + .05); o.frequency.setValueAtTime(1300, t0 + .1);
+  g.gain.setValueAtTime(.04, t0); g.gain.setValueAtTime(.0001, t0 + .15);
+  o.connect(g).connect(a.destination); o.start(t0); o.stop(t0 + .16);
+}
+let memeTimer = null;
+function memeStart(){
+  const m = $('#meme'); clearTimeout(memeTimer); $('#memeCap').textContent = 'Start drawing now!';
+  m.hidden = false; m.classList.remove('play', 'dance'); void m.offsetWidth; m.classList.add('play');
+  glitchSound(0); [0, 1, 2, 3, 4].forEach(n => clang(.56 + n*.36)); glitchSound(2.25);
+  memeTimer = setTimeout(() => { m.classList.remove('play'); m.hidden = true; }, 2750);
+}
+/* time's up: a bouncy little tune while the hamster dances (two beats per second, matching the dance) */
+function danceTune(){
+  const a = audio(); if (!a || !soundOn) return;
+  const N = {C5:523.3,D5:587.3,E5:659.3,F5:698.5,G5:784,A5:880,C6:1046.5,C3:130.8,F3:174.6,G3:196};
+  const tune = [['C5',0],['E5',.25],['G5',.5],['E5',.75],['F5',1],['A5',1.25],['G5',1.5],['E5',1.75],['F5',2],['D5',2.25],['E5',2.5],['C5',2.75],['G5',3],['C6',3.25]];
+  const bass = [['C3',0],['C3',.5],['F3',1],['F3',1.5],['G3',2],['G3',2.5],['C3',3],['C3',3.25]];
+  const play = (hz, t, len, type, peak) => { const t0 = a.currentTime + .42 + t, o = a.createOscillator(), g = a.createGain();
+    o.type = type; o.frequency.value = hz; g.gain.setValueAtTime(.0001, t0); g.gain.exponentialRampToValueAtTime(peak, t0 + .01); g.gain.exponentialRampToValueAtTime(.0001, t0 + len);
+    o.connect(g).connect(a.destination); o.start(t0); o.stop(t0 + len + .05); };
+  tune.forEach(([n, t], i) => play(N[n], t, i === tune.length - 1 ? .7 : .22, 'triangle', .1));
+  bass.forEach(([n, t]) => play(N[n], t, .2, 'square', .03));
+}
+function memeDance(){
+  const m = $('#meme'); clearTimeout(memeTimer); $('#memeCap').textContent = 'Pencils down!';
+  m.hidden = false; m.classList.remove('play', 'dance'); void m.offsetWidth; m.classList.add('dance');
+  glitchSound(0); danceTune(); glitchSound(3.95);
+  memeTimer = setTimeout(() => { m.classList.remove('dance'); m.hidden = true; }, 4450);
+}
+$('#tStart').addEventListener('click', () => {
+  if (tick){ stop(); $('#tStart').textContent = 'Resume'; return; }
+  if (left <= 0) left = minutes*60;
+  $('#tStart').textContent = 'Pause';
+  const tc = $('#timerCard'); tc.classList.remove('kick'); void tc.offsetWidth; tc.classList.add('kick', 'running');
+  memeStart();
+  const gl = $('#goLabel'); gl.textContent = 'Start drawing now!'; gl.classList.remove('show'); void gl.offsetWidth; gl.classList.add('show');
+  tick = setInterval(() => { left--; paint(); if (left <= 0){ stop(); $('#tStart').textContent = 'Start'; memeDance(); } }, 1000);
+  paint();
+});
+/* end early: jump straight to "Pencils down!" and the dancing hamster */
+$('#tEnd').addEventListener('click', () => {
+  if (left <= 0 || left >= minutes*60 && !tick) return;
+  left = 0; stop(); paint(); $('#tStart').textContent = 'Start'; $('#tEnd').disabled = true; memeDance();
+});
+$('#tReset').addEventListener('click', () => { stop(); left = minutes*60; paint(); $('#tStart').textContent = 'Start'; });
+document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-pressed', x === b));
+  minutes = +b.dataset.min; stop(); left = minutes*60; paint(); $('#tStart').textContent = 'Start';
+}));
+
+/* ---------- this week's slides + our Padlets ----------
+   The lists live in the #hubData block of this page. When Ms Leong (an editor) adds or removes
+   something, the page rebuilds its own HTML with the new data and publishes it as a new version,
+   so students see it through the ordinary link without signing in. */
+let DATA = (() => { try { return JSON.parse(document.getElementById('hubData').textContent) || {}; } catch (e) { return {}; } })();
+DATA.slides = DATA.slides || []; DATA.padlets = DATA.padlets || []; DATA.submitLink = DATA.submitLink || '';
+const SKELETON = '<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>';
+function buildHtml(data){
+  const json = JSON.stringify(data).replace(/</g, '\\u003c');
+  return SKELETON + HEAD_PRE + '<style id="hubStyle">' + document.getElementById('hubStyle').textContent + '</style>\n'
+    + '<template id="pageMarkup">' + document.getElementById('pageMarkup').innerHTML + '</template>\n<div id="app"></div>\n'
+    + '<script type="application/json" id="hubData">' + json + '<\/script>\n'
+    + '<script id="hubMain">' + document.getElementById('hubMain').textContent + '<\/script></body></html>';
+}
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const safeUrl = u => /^https:\/\/[^\s"'<>]+$/i.test(u || '') ? u : '';
+const newId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+let ART = null, ASSETS = null, TEACHER = false, CAN_EDIT = false;
+
+function slideButtons(s, onDark){
+  const b = [];
+  if (safeUrl(s.link)) b.push(`<a class="btn" href="${esc(s.link)}" target="_blank" rel="noopener">Open slides ↗</a>`);
+  if (s.file && /^[0-9a-f]{32}$/.test(s.file.id)) b.push(`<button class="btn${b.length ? ' ghost' : ''}" type="button" data-view-file="${s.file.id}" data-kind="${/\.pdf$/i.test(s.file.name || '') ? 'pdf' : 'img'}" data-title="${esc('Week ' + s.week + ': ' + s.topic)}">${b.length ? 'View file' : 'View slides'}</button>`);
+  if (TEACHER) b.push(`<button class="rm" type="button" data-rm-slide="${esc(s.id)}">Remove</button>`);
+  return `<div class="open">${b.join('')}</div>`;
+}
+function renderSlides(){
+  const all = DATA.slides.slice().sort((a, b) => (b.week - a.week) || (b.added - a.added));
+  const q = $('#slideSearch').value.trim().toLowerCase(), wk = $('#weekFilter').value;
+  const weeks = [...new Set(all.map(s => s.week))];
+  const sel = $('#weekFilter');
+  sel.innerHTML = '<option value="">All weeks</option>' + weeks.map(w => `<option value="${w}"${String(w) === wk ? ' selected' : ''}>Week ${w}</option>`).join('');
+  const match = s => (!wk || String(s.week) === wk) && (!q || String(s.week) === q.replace(/^week\s*/, '') || (s.topic + ' ' + (s.note || '')).toLowerCase().includes(q));
+  const latest = all[0], filtering = q || wk;
+  $('#thisWeek').innerHTML = latest && !filtering ? `<div class="this-week">
+      <div class="wk"><small>This week</small><span>${esc(latest.week)}</span></div>
+      <div><h3>${esc(latest.topic)}</h3>${latest.note ? `<p>${esc(latest.note)}</p>` : ''}</div>
+      ${slideButtons(latest, true)}</div>` : '';
+  const list = all.filter(match).filter(s => filtering || s !== latest);
+  $('#slideList').innerHTML = list.map(s => `<article class="scard"><span class="chip">Week ${esc(s.week)}</span><h3>${esc(s.topic)}</h3>${s.note ? `<p>${esc(s.note)}</p>` : ''}${slideButtons(s)}</article>`).join('');
+  const none = !all.length || (filtering && !list.length);
+  $('#slidesEmpty').hidden = !none;
+  $('#slidesEmpty').textContent = all.length ? 'No slides match that search. Try a week number or another word.' : 'No slides yet. Ms Leong will add them here each week.';
+}
+const AV = ['#2340B8','#D7322B','#2E8B57','#EE7A22','#6A3D9A','#C2547F'];
+function renderPadlets(){
+  const q = $('#padletSearch').value.trim().toLowerCase();
+  const all = DATA.padlets.slice().sort((a, b) => (a.klass || '').localeCompare(b.klass || '') || a.name.localeCompare(b.name));
+  const list = all.filter(p => !q || (p.name + ' ' + (p.klass || '')).toLowerCase().includes(q));
+  $('#padletList').innerHTML = list.map(p => { const c = AV[[...p.name].reduce((n, ch) => n + ch.charCodeAt(0), 0) % AV.length];
+    return `<article class="pcard"><span class="av" style="background:${c}" aria-hidden="true">${esc([...p.name.trim()][0] || '?').toUpperCase()}</span><b>${esc(p.name)}</b><span>${p.klass ? 'Class ' + esc(p.klass) : ''}</span>
+      <div class="row">${safeUrl(p.url) ? `<a class="btn" href="${esc(p.url)}" target="_blank" rel="noopener">Open Padlet ↗</a>` : ''}${TEACHER ? `<button class="rm" type="button" data-rm-padlet="${esc(p.id)}">Remove</button>` : ''}</div></article>`; }).join('');
+  $('#padletsEmpty').hidden = !!list.length;
+  $('#padletsEmpty').textContent = all.length ? 'No Padlets match that search.' : 'No Padlets yet.';
+  const board = safeUrl(DATA.submitLink); $('#submitBoard').hidden = !board; if (board) $('#submitBoard').href = board;
+}
+$('#slideSearch').addEventListener('input', renderSlides);
+$('#weekFilter').addEventListener('change', renderSlides);
+$('#padletSearch').addEventListener('input', renderPadlets);
+
+/* saving: rebuild the page with the new data and publish it; every open view then reloads to it */
+async function save(statusEl, change){
+  if (!ART) return;
+  const before = JSON.stringify(DATA);
+  change(DATA);
+  statusEl.className = 'status'; statusEl.textContent = 'Saving…';
+  try { sessionStorage.setItem('hub:scrollTo', statusEl.id === 'slideStatus' ? 'slides' : 'padletList'); } catch (e) {}
+  try { await ART.publish(buildHtml(DATA)); statusEl.textContent = 'Saved. The page is updating…'; }
+  catch (e) {
+    DATA = JSON.parse(before); renderSlides(); renderPadlets();
+    const code = e && e.code;
+    if (code === 'conflict') statusEl.textContent = 'This page changed somewhere else. It’s reloading with the newest version, so add it again after that.';
+    else if (code === 'not_writer' || code === 'not_granted' || code === 'not_declared') { statusEl.textContent = 'Saving isn’t available in this view.'; }
+    else if (code === 'rate_limited') statusEl.textContent = 'Saving too quickly. Wait a moment, then try again.';
+    else statusEl.textContent = 'Couldn’t save just now. Try again in a moment.';
+    statusEl.classList.add('err');
+  }
+}
+function confirmRemove(btn, go){
+  if (btn.classList.contains('sure')) return go();
+  btn.classList.add('sure'); btn.textContent = 'Tap again to remove';
+  setTimeout(() => { if (btn.isConnected){ btn.classList.remove('sure'); btn.textContent = 'Remove'; } }, 3000);
+}
+document.addEventListener('click', e => {
+  const s = e.target.closest('[data-rm-slide]'), p = e.target.closest('[data-rm-padlet]');
+  if (s && TEACHER) confirmRemove(s, () => save($('#slideStatus'), d => { d.slides = d.slides.filter(x => x.id !== s.dataset.rmSlide); }));
+  if (p && TEACHER) confirmRemove(p, () => save($('#padletStatus'), d => { d.padlets = d.padlets.filter(x => x.id !== p.dataset.rmPadlet); }));
+});
+$('#slideForm').addEventListener('submit', async e => {
+  e.preventDefault(); if (!TEACHER) return;
+  const st = $('#slideStatus'); st.className = 'status';
+  const week = parseInt($('#sWeek').value, 10), topic = $('#sTopic').value.trim(), link = $('#sLink').value.trim(), note = $('#sNote').value.trim(), f = $('#sFile').files[0];
+  if (!week || !topic){ st.textContent = 'Add a week number and a topic.'; st.classList.add('err'); return; }
+  if (link && !safeUrl(link)){ st.textContent = 'The link must start with https://'; st.classList.add('err'); return; }
+  if (!link && !f){ st.textContent = 'Add a link to the slides or choose a file to upload.'; st.classList.add('err'); return; }
+  let file = null;
+  if (f){
+    if (!ASSETS){ st.textContent = 'Uploading isn’t available in this view. Paste a link instead.'; st.classList.add('err'); return; }
+    const type = f.type || (/\.pdf$/i.test(f.name) ? 'application/pdf' : '');
+    if (!/^(application\/pdf|image\/(png|jpeg|webp|gif))$/.test(type)){ st.textContent = 'Only PDF or image files can be uploaded. Share PowerPoint files as a link.'; st.classList.add('err'); return; }
+    if (f.size > 20 * 1024 * 1024){ st.textContent = 'That file is over 20 MB. Share it as a link instead.'; st.classList.add('err'); return; }
+    st.textContent = 'Uploading…';
+    try { const r = await ASSETS.upload(f, {type}); file = {id: r.id, name: f.name}; }
+    catch (err){ st.textContent = err && err.code === 'quota_or_state' ? 'This page’s storage is full. Share the slides as a link instead.' : 'The upload didn’t work. Try again, or share a link.'; st.classList.add('err'); return; }
+  }
+  save(st, d => d.slides.push({id: newId(), week, topic, note, link: safeUrl(link), file, added: Date.now()}));
+});
+$('#padletForm').addEventListener('submit', e => {
+  e.preventDefault(); if (!TEACHER) return;
+  const st = $('#padletStatus'), name = $('#pName').value.trim(), klass = $('#pClass').value.trim(), url = $('#pLink').value.trim();
+  if (!name || !safeUrl(url)){ st.className = 'status err'; st.textContent = 'Add a name and a link that starts with https://'; return; }
+  save(st, d => d.padlets.push({id: newId(), name, klass, url}));
+});
+$('#bulkForm').addEventListener('submit', e => {
+  e.preventDefault(); if (!TEACHER) return;
+  /* rows copied from Excel or Google Sheets arrive tab-separated; typed rows use commas. Header rows have no link and are skipped. */
+  const st = $('#padletStatus'), rows = [], lines = $('#pBulk').value.split('\n').map(l => l.trim()).filter(Boolean);
+  lines.forEach(l => { const m = l.match(/https:\/\/[^\s,\t]+/i); if (!m) return; const parts = l.replace(m[0], '').split(/[\t,]/).map(x => x.trim()).filter(Boolean);
+    if (parts[0]) rows.push({name: parts[0].slice(0, 40), klass: (parts[1] || '').slice(0, 12), url: m[0]}); });
+  if (!rows.length){ st.className = 'status err'; st.textContent = 'No rows with a Padlet link found. Each row needs a name and a link that starts with https://'; return; }
+  const key = r => (r.name + '|' + r.klass).toLowerCase();
+  let added = 0, updated = 0, same = 0;
+  const next = DATA.padlets.map(x => ({...x}));
+  rows.forEach(r => {
+    if (next.some(x => x.url === r.url && key(x) === key(r))) { same++; return; }
+    const hit = next.find(x => key(x) === key(r)) || next.find(x => x.url === r.url);
+    if (hit) { Object.assign(hit, r); updated++; } else { next.push({id: newId(), ...r}); added++; }
+  });
+  if (!added && !updated){ st.className = 'status'; st.textContent = `Everyone is already up to date (${same} checked).`; return; }
+  save(st, d => { d.padlets = next; });
+  st.textContent = `Saving: ${added} new, ${updated} updated${same ? `, ${same} already up to date` : ''}…`;
+});
+$('#boardForm').addEventListener('submit', e => {
+  e.preventDefault(); if (!TEACHER) return;
+  const st = $('#padletStatus'), url = $('#pBoard').value.trim();
+  if (url && !safeUrl(url)){ st.className = 'status err'; st.textContent = 'The link must start with https://'; return; }
+  save(st, d => { d.submitLink = safeUrl(url); });
+});
+
+/* ---------- in-page slide viewer ----------
+   Uploaded files only open inside this page, so PDFs are drawn here with PDF.js (loaded on first use). */
+let pdfLib = null, vDoc = null, vPage = 1, vLast = null;
+function loadScript(src){ return new Promise((ok, no) => { const t = document.createElement('script'); t.src = src; t.onload = ok; t.onerror = no; document.head.appendChild(t); }); }
+async function pdfjs(){
+  if (pdfLib) return pdfLib;
+  const base = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/';
+  await loadScript(base + 'pdf.worker.min.js');   /* runs PDF.js on the page itself (no separate worker needed) */
+  await loadScript(base + 'pdf.min.js');
+  pdfLib = window.pdfjsLib; pdfLib.GlobalWorkerOptions.workerSrc = base + 'pdf.worker.min.js';
+  return pdfLib;
+}
+function vMsg(t){ $('#vMsg').textContent = t; $('#vMsg').hidden = !t; }
+async function drawPage(){
+  if (!vDoc) return;
+  const page = await vDoc.getPage(vPage), stage = $('#vStage');
+  const base = page.getViewport({scale: 1}), fit = Math.min((stage.clientWidth - 32) / base.width, (stage.clientHeight - 16) / base.height);
+  const dpr = Math.min(window.devicePixelRatio || 1, 2), vp = page.getViewport({scale: fit * dpr}), c = $('#vCanvas');
+  c.width = vp.width; c.height = vp.height; c.style.width = (vp.width / dpr) + 'px'; c.style.height = (vp.height / dpr) + 'px';
+  await page.render({canvasContext: c.getContext('2d'), viewport: vp}).promise;
+  $('#vPage').textContent = `Slide ${vPage} of ${vDoc.numPages}`;
+  $('#vPrev').disabled = vPage <= 1; $('#vNext').disabled = vPage >= vDoc.numPages;
+}
+async function openViewer(id, kind, title, opener){
+  vLast = opener; vDoc = null; vPage = 1;
+  $('#vTitle').textContent = title; $('#vPage').textContent = ''; $('#viewer').hidden = false; document.body.style.overflow = 'hidden';
+  $('#vCanvas').hidden = true; $('#vImg').hidden = true; $('#vPrev').hidden = $('#vNext').hidden = kind !== 'pdf';
+  vMsg('Opening the slides…'); $('#vClose').focus();
+  try {
+    if (kind === 'img'){ const img = $('#vImg'); img.alt = title; img.src = '/_blob/' + id; await img.decode(); img.hidden = false; vMsg(''); return; }
+    const res = await fetch('/_blob/' + id); if (!res.ok) throw new Error('fetch ' + res.status);
+    const lib = await pdfjs(); vDoc = await lib.getDocument({data: new Uint8Array(await res.arrayBuffer())}).promise;
+    $('#vCanvas').hidden = false; vMsg(''); await drawPage();
+  } catch (e) { vMsg('These slides couldn’t be opened here. Ask Ms Leong for a link to the slides.'); }
+}
+function closeViewer(){ $('#viewer').hidden = true; document.body.style.overflow = ''; vDoc = null; if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); if (vLast && vLast.isConnected) vLast.focus(); }
+document.addEventListener('click', e => { const b = e.target.closest('[data-view-file]'); if (b) openViewer(b.dataset.viewFile, b.dataset.kind, b.dataset.title, b); });
+$('#vClose').addEventListener('click', closeViewer);
+$('#vPrev').addEventListener('click', () => { if (vDoc && vPage > 1){ vPage--; drawPage(); } });
+$('#vNext').addEventListener('click', () => { if (vDoc && vPage < vDoc.numPages){ vPage++; drawPage(); } });
+$('#vFull').addEventListener('click', async () => { try { if (document.fullscreenElement) await document.exitFullscreen(); else await $('#viewer').requestFullscreen(); } catch (e) {} });
+document.addEventListener('fullscreenchange', () => { $('#vFull').textContent = document.fullscreenElement === $('#viewer') ? 'Exit full screen' : 'Full screen'; if (!$('#viewer').hidden) setTimeout(drawPage, 80); });
+window.addEventListener('resize', () => { if (!$('#viewer').hidden && vDoc) drawPage(); });
+document.addEventListener('keydown', e => {
+  if ($('#viewer').hidden) return;
+  if (e.key === 'Escape' && !document.fullscreenElement) closeViewer();
+  if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); $('#vNext').click(); }
+  if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); $('#vPrev').click(); }
+});
+
+/* edit mode: only people who can edit the page see the switch; it starts off, so a projected page shows the student view */
+function setEditing(on){
+  TEACHER = !!(on && CAN_EDIT);
+  $('#slideTools').hidden = !TEACHER; $('#padletTools').hidden = !TEACHER;
+  const b = $('#editToggle'); b.setAttribute('aria-pressed', TEACHER); b.textContent = TEACHER ? 'Edit mode: on' : 'Edit mode: off';
+  try { sessionStorage.setItem('hub:editing', TEACHER ? '1' : '0'); } catch (e) {}
+  renderSlides(); renderPadlets();
+}
+$('#editToggle').addEventListener('click', () => setEditing(!TEACHER));
+
+/* teacher tools appear only for people who can edit this page */
+(async () => {
+  const cl = window.claude; if (!cl || !cl.use) return;
+  const [user, art] = await Promise.all([cl.use('user'), cl.use('artifact')]);
+  if (!user || !art) return;
+  let canEdit = false; try { canEdit = await user.canEdit(); } catch (e) {}
+  if (!canEdit) return;
+  ART = art; CAN_EDIT = true;
+  try { ASSETS = await cl.use('assets'); } catch (e) {}
+  $('#pBoard').value = DATA.submitLink || '';
+  $('#editToggle').hidden = false;
+  let on = false; try { on = sessionStorage.getItem('hub:editing') === '1'; } catch (e) {}
+  setEditing(on);
+  renderSlides(); renderPadlets();
+})();
+renderSlides(); renderPadlets();
+try { const to = sessionStorage.getItem('hub:scrollTo'); if (to){ sessionStorage.removeItem('hub:scrollTo'); setTimeout(() => document.getElementById(to)?.scrollIntoView(), 60); } } catch (e) {}
+</script></body></html>
