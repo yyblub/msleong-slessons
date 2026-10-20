@@ -15,18 +15,22 @@
   --accent-ink:#FFFFFF;
   --accent-soft:#E4E8FA;
   --pin:#D7322B;
+  --good:#23794B;
+  --good-ink:#FFFFFF;
+  --gold:#F4C430;
+  --gold-2:#F9DC7A;
   --f-display:"Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   --f-body:"Atkinson Hyperlegible", "Verdana", "Segoe UI", system-ui, sans-serif;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     --paper:#11121A; --card:#1A1C27; --ink:#ECEDF5; --muted:#A4A7BB; --line:#2C2E3F;
-    --accent:#8C9DFF; --accent-ink:#0E1020; --accent-soft:#252B4D; --pin:#FF7A6E; color-scheme:dark;
+    --accent:#8C9DFF; --accent-ink:#0E1020; --accent-soft:#252B4D; --pin:#FF7A6E; --good:#5CC48A; --good-ink:#0E1020; --gold:#F4C430; --gold-2:#C99A12; color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
   --paper:#11121A; --card:#1A1C27; --ink:#ECEDF5; --muted:#A4A7BB; --line:#2C2E3F;
-  --accent:#8C9DFF; --accent-ink:#0E1020; --accent-soft:#252B4D; --pin:#FF7A6E; color-scheme:dark;
+  --accent:#8C9DFF; --accent-ink:#0E1020; --accent-soft:#252B4D; --pin:#FF7A6E; --good:#5CC48A; --good-ink:#0E1020; --gold:#F4C430; --gold-2:#C99A12; color-scheme:dark;
 }
 *{box-sizing:border-box}
 body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55}
@@ -255,6 +259,119 @@ footer{border-top:1px solid var(--line);padding-top:18px;color:var(--muted);font
 .edit-pill{position:fixed;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:55;font:inherit;font-size:14.5px;font-weight:700;border-radius:999px;padding:9px 16px;border:2px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.18)}
 .edit-pill[aria-pressed="true"]{background:#B3261E;border-color:#B3261E;color:#fff}
 @media (max-width: 640px){ .this-week{grid-template-columns:minmax(0,1fr)} .this-week .wk{text-align:left} }
+
+/* ---------- Art Quest: the lesson roadmap students level up along ---------- */
+.quest{background:var(--card);border:1.5px solid var(--line);border-radius:20px;padding:clamp(18px,3.5vw,32px);display:grid;gap:22px;min-width:0}
+.q-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,340px);gap:18px 28px;align-items:center}
+.q-head > div:first-child{display:grid;gap:8px;max-width:60ch}
+.q-head h2{font-size:clamp(32px,4.6vw,48px);font-weight:800;letter-spacing:-.02em}
+.q-head p{color:var(--muted)}
+.rankcard{display:grid;grid-template-columns:76px minmax(0,1fr);gap:14px;align-items:center;border:2.5px solid var(--ink);border-radius:18px;padding:14px 16px;background:var(--paper);box-shadow:0 4px 0 var(--ink)}
+.rc-badge svg{width:76px;height:auto;display:block}
+.rankcard strong{display:block;font-family:var(--f-display);font-size:clamp(26px,3.4vw,34px);line-height:1;margin:4px 0 8px;overflow-wrap:anywhere}
+.xpbar{height:14px;border-radius:999px;background:var(--line);overflow:hidden;border:1.5px solid var(--ink)}
+.xpbar span{display:block;height:100%;background:repeating-linear-gradient(-45deg,var(--gold) 0 8px,var(--gold-2) 8px 16px);transition:width .6s cubic-bezier(.2,1.2,.4,1)}
+.rankcard small{display:block;margin-top:6px;font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.trail-wrap{position:relative;overflow-x:auto;padding:50px 4px 12px}
+.trail{list-style:none;margin:0;padding:0;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(132px,1fr);min-width:min-content}
+.trail li{position:relative;display:grid;justify-items:center}
+.trail li + li::before{content:"";position:absolute;top:35px;left:-50%;width:100%;height:8px;background:repeating-linear-gradient(90deg,var(--line) 0 12px,transparent 12px 18px)}
+.trail li.linked::before{background:var(--good)}
+.stop-btn{position:relative;z-index:1;display:grid;justify-items:center;align-content:start;gap:4px;background:none;border:0;padding:0 6px 6px;font:inherit;color:inherit;text-align:center;cursor:pointer;border-radius:14px}
+div.stop-btn{cursor:default}
+.node{width:78px;height:78px;border-radius:50%;padding:6px;border:3px solid var(--ink);background:conic-gradient(var(--good) calc(var(--p,0) * 1turn), var(--paper) 0);box-shadow:0 4px 0 var(--ink);transition:transform .15s}
+.node i{font-style:normal;display:grid;place-items:center;width:100%;height:100%;border-radius:50%;background:var(--card);border:2px solid var(--ink);font-family:var(--f-display);font-weight:800;font-size:24px}
+.node svg{width:30px;height:30px;display:block}
+button.stop-btn:hover .node{transform:translateY(-3px)}
+.stop.sel .node{outline:4px solid var(--accent);outline-offset:4px}
+.stop.done .node i{background:var(--good);color:var(--good-ink)}
+.stop.locked .node{border-style:dashed;box-shadow:none;background:var(--paper)}
+.stop.locked .node i{border-style:dashed;color:var(--muted);background:var(--paper)}
+.stop.locked b{color:var(--muted)}
+.stop.finish .node{background:var(--gold)}
+.stop.finish.done .node i{background:var(--gold)}
+.st-wk{font-size:12.5px;letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:var(--muted);margin-top:8px}
+.stop-btn b{font-family:var(--f-display);font-size:17px;line-height:1.15;max-width:15ch}
+.now-chip{font-size:12.5px;font-weight:700;border-radius:999px;padding:2px 10px;background:var(--pin);color:#fff}
+.ham{position:absolute;top:-46px;left:50%;width:50px;margin-left:-25px;z-index:2;animation:hop 1.6s ease-in-out infinite}
+.ham svg{display:block;width:100%;height:auto}
+@keyframes hop{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.q-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,280px);gap:18px;align-items:start}
+.stop-detail{border:1.5px solid var(--line);border-radius:16px;padding:clamp(16px,3vw,24px);display:grid;gap:16px;min-width:0;background:var(--paper)}
+.sd-head{display:grid;gap:8px}
+.sd-chips{display:flex;flex-wrap:wrap;gap:6px}
+.qchip{font-size:13px;font-weight:700;border-radius:999px;padding:3px 10px;background:var(--ink);color:var(--paper)}
+.qchip.now{background:var(--pin);color:#fff}
+.qchip.ok{background:var(--good);color:var(--good-ink)}
+.qchip.lock{background:none;border:1.5px dashed var(--muted);color:var(--muted)}
+.sd-head h3{font-size:clamp(26px,3.4vw,34px);font-weight:800}
+.sd-head p{color:var(--muted);max-width:60ch}
+.goals{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.goal{display:grid;gap:10px;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px}
+.goal.got{border-color:var(--good)}
+.goal p{font-weight:700}
+.rate{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.rate button{font:inherit;font-size:14px;font-weight:700;display:grid;justify-items:center;padding:7px 6px;border-radius:12px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer;line-height:1.25}
+.rate button small{font-weight:400;color:var(--muted);font-size:12.5px}
+.rate .dots{letter-spacing:2px;font-size:11px;color:var(--muted)}
+.rate button:hover:not(:disabled){border-color:var(--ink)}
+.rate button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.rate button[data-v="3"][aria-pressed="true"]{background:var(--good);border-color:var(--good);color:var(--good-ink)}
+.rate button[aria-pressed="true"] small,.rate button[aria-pressed="true"] .dots{color:inherit}
+.rate button:disabled{cursor:not-allowed;opacity:.55}
+.reflect{display:grid;gap:6px;font-weight:700}
+.reflect small{color:var(--muted)}
+.reflect.ok small{color:var(--good)}
+.reflect textarea{font:inherit;font-size:16px;font-weight:400;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;min-height:76px;resize:vertical}
+.reflect textarea:focus-visible{outline:3px solid var(--accent);outline-offset:1px}
+.sd-foot{justify-content:space-between;align-items:center}
+.sd-foot .tbtn:disabled{visibility:hidden}
+.ladder{display:grid;gap:14px;min-width:0}
+.ladder ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column-reverse;gap:4px}
+.ladder li{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:10px;align-items:center;padding:5px 10px;border-radius:10px;font-size:15px;color:var(--muted)}
+.ladder li svg{width:30px;height:auto;display:block;opacity:.35;filter:grayscale(1)}
+.ladder li.got svg,.ladder li.cur svg{opacity:1;filter:none}
+.ladder li.got{color:var(--ink)}
+.ladder li.cur{background:var(--accent-soft);color:var(--ink)}
+.ladder li b{font-family:var(--f-display);font-size:16px;overflow-wrap:anywhere}
+.ladder li span{font-size:13px;font-variant-numeric:tabular-nums}
+.qstats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.qstats div{border:1.5px solid var(--line);border-radius:12px;padding:8px 12px;display:grid}
+.qstats b{font-family:var(--f-display);font-size:24px;font-variant-numeric:tabular-nums}
+.qstats span{font-size:13px;color:var(--muted)}
+.ladder .note{font-size:13.5px;color:var(--muted)}
+.ladder .open{margin:0}
+.qt-form{display:grid;gap:12px}
+.q-moved{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center}
+.q-moved span{color:var(--muted);max-width:60ch}
+.qt-stops{display:grid;gap:10px}
+.qt-stop{border:1.5px solid var(--line);border-radius:12px;background:var(--card);padding:12px;margin:0;min-width:0}
+.qt-stop legend{font-family:var(--f-display);font-weight:800;padding:0 6px}
+.qt-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.tform label.now-pick{display:inline-flex;align-items:center;gap:8px;margin-right:auto}
+.now-pick input{width:18px;height:18px;accent-color:var(--pin)}
+/* level-up toast and the Grandmaster ending */
+.levelup{position:fixed;left:50%;bottom:calc(72px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:65;display:flex;align-items:center;gap:14px;background:var(--card);border:3px solid var(--ink);border-radius:18px;padding:12px 20px 12px 14px;box-shadow:0 6px 0 var(--ink);width:max-content;max-width:calc(100vw - 32px)}
+.levelup svg{width:56px;height:auto;flex:none}
+.levelup b{display:block;font-family:var(--f-display);font-size:22px;line-height:1.1}
+.levelup.show{animation:lvl .6s cubic-bezier(.2,1.6,.4,1) both}
+@keyframes lvl{from{transform:translateX(-50%) translateY(30px) scale(.7);opacity:0}to{transform:translateX(-50%);opacity:1}}
+.ending{position:fixed;inset:0;z-index:70;display:grid;place-items:center;overflow:auto;background:rgba(10,12,20,.82);padding:calc(16px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.ending canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
+.end-card{position:relative;width:min(540px,100%);background:var(--card);border:4px solid var(--ink);border-radius:22px;padding:clamp(18px,4vw,30px);display:grid;gap:12px;text-align:center;justify-items:center;box-shadow:0 10px 0 var(--ink)}
+.end-card h2{font-size:clamp(44px,9vw,72px);font-weight:800;letter-spacing:-.03em;overflow-wrap:anywhere}
+.end-card > p{max-width:44ch}
+.end-ham.meme{position:static;transform:none;width:min(190px,48vw)}
+.end-ham.meme.dance svg,.end-ham.meme.dance .m-stick,.end-ham.meme.dance .m-pan,.end-ham.meme.dance .m-notes text{animation-iteration-count:infinite}
+.cert{width:100%;display:grid;gap:4px;justify-items:center;padding:20px 16px;border-radius:12px;background:var(--paper);border:3px solid var(--gold);outline:1.5px solid var(--ink);outline-offset:-10px}
+.cert b{font-family:var(--f-display);font-size:clamp(26px,5vw,34px);line-height:1.1;overflow-wrap:anywhere}
+.cert-meta{font-size:14px;color:var(--muted)}
+.cert-sign{font-family:var(--f-display);font-weight:800;margin-top:6px;border-top:1.5px solid var(--ink);padding-top:2px;min-width:12ch}
+.end-card label{display:grid;gap:4px;font-weight:700;font-size:14px;width:100%;text-align:left}
+.end-card input{font:inherit;font-size:16px;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:9px 12px}
+.end-card .note{font-size:14px;color:var(--muted)}
+@media (prefers-reduced-motion: reduce){ .ham,.levelup.show{animation:none} .xpbar span{transition:none} }
+@media (max-width: 760px){ .q-head,.q-body{grid-template-columns:minmax(0,1fr)} .trail{grid-auto-columns:118px} }
 </style>
 <template id="pageMarkup"><div class="wrap">
   <header class="banner">
@@ -279,6 +396,10 @@ footer{border-top:1px solid var(--line);padding-top:18px;color:var(--muted);font
       <a href="#gacha">
         <svg viewBox="0 0 48 48" aria-hidden="true"><defs><clipPath id="menuEgg"><path d="M24 4 C37 4 43 24 43 33 C43 42 35 46 24 46 C13 46 5 42 5 33 C5 24 11 4 24 4 Z"></path></clipPath></defs><g clip-path="url(#menuEgg)"><rect x="0" y="0" width="48" height="48" fill="#EC86AE"></rect><path d="M4 18 L9 14 L14 18 L19 14 L24 18 L29 14 L34 18 L39 14 L44 18" fill="none" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"></path><rect x="0" y="34" width="48" height="4" fill="#C2547F"></rect><circle cx="16" cy="27" r="2" fill="#fff"></circle><circle cx="32" cy="27" r="2" fill="#fff"></circle></g><path d="M24 4 C37 4 43 24 43 33 C43 42 35 46 24 46 C13 46 5 42 5 33 C5 24 11 4 24 4 Z" fill="none" stroke="#16182B" stroke-width="2"></path><polyline points="7,24 12,21 17,26 22,21 27,26 32,21 37,26 41,23" fill="none" stroke="#16182B" stroke-width="1.6" stroke-linejoin="round"></polyline><ellipse cx="17" cy="13" rx="3" ry="5" fill="#fff" opacity=".5" transform="rotate(25 17 13)"></ellipse></svg>
         <span><b>Pick a Mystery Egg</b><small>A quick warm-up drawing</small></span>
+      </a>
+      <a href="#quest" id="menuQuest">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M9 40 C9 28 39 34 39 23 C39 13 17 19 17 9" fill="none" stroke="#16182B" stroke-width="3" stroke-dasharray="4 4" stroke-linecap="round"></path><circle cx="9" cy="40" r="5" fill="#2E8B57" stroke="#16182B" stroke-width="2"></circle><circle cx="39" cy="24" r="5" fill="#F4C430" stroke="#16182B" stroke-width="2"></circle><path d="M17 14 L17 2 L28 5.5 L17 9" fill="#D7322B" stroke="#16182B" stroke-width="2" stroke-linejoin="round"></path></svg>
+        <span><b>Check my Art Quest</b><small>See what you’ve learned and level up</small></span>
       </a>
     </nav>
   </header>
@@ -426,6 +547,48 @@ Wei Ling, 2R, https://padlet.com/…"></textarea></label>
     </div>
   </section>
 
+  <section class="quest" id="quest" aria-labelledby="quest-h">
+    <header class="q-head">
+      <div>
+        <span class="eyebrow">Learning roadmap</span>
+        <h2 id="quest-h">Art Quest</h2>
+        <p id="qIntro">See where the class is on the roadmap. Tap a lesson, rate how well you know each skill and write one thing you learned. Every answer earns XP, so you can level up from <b id="qFirst">Apprentice</b> all the way to <b id="qLast">Grandmaster</b>.</p>
+      </div>
+      <div class="rankcard" id="rankCard" aria-live="polite"></div>
+    </header>
+    <div class="q-moved" id="questMoved" hidden=""><a class="btn" id="questMovedLink" href="#" target="_blank" rel="noopener">Open Art Quest ↗</a><span>Drive through the art movements, rate your skills and collect stickers. Sign in with your username and PIN, and your progress follows you to any device.</span></div>
+    <div class="trail-wrap" id="trailWrap"><ol class="trail" id="trail" aria-label="Lessons on the roadmap"></ol></div>
+    <div class="q-body">
+      <div class="stop-detail" id="stopDetail"></div>
+      <aside class="ladder" aria-label="Ranks and progress">
+        <span class="eyebrow">Ranks</span>
+        <ol id="ladder"></ol>
+        <div class="qstats" id="qStats"></div>
+        <p class="note">Your progress is saved in this browser on this device.</p>
+        <div class="open"><button class="tbtn" id="qReplay" type="button" hidden="">Replay my ending</button><button class="rm" id="qReset" type="button">Reset my progress</button></div>
+      </aside>
+    </div>
+
+    <div class="teacher" id="questTools" hidden="">
+      <h4>Edit the roadmap <span class="note">· Only you can see this.</span></h4>
+      <p class="note">Add a stop for each lesson and write its skills as “I can…” statements (up to 6). Pick the lesson the class is on: it and every lesson before it unlock for students. Each student’s answers are saved in their own browser, so they aren’t sent to you and don’t carry over to another computer.</p>
+      <form class="tform" id="questLinkForm">
+        <label for="qtLink" class="wide">Art Quest web app link (from Apps Script, Deploy). Once saved, students see a button to the new Art Quest instead of the roadmap below.<input id="qtLink" type="url" placeholder="https://script.google.com/macros/s/…/exec"></label>
+        <button class="tbtn go" type="submit">Save link</button>
+      </form>
+      <form class="qt-form" id="questForm">
+        <div class="tform">
+          <label for="qtTitle">Quest name<input id="qtTitle" type="text" maxlength="40" placeholder="e.g. Term 4 Art Quest"></label>
+          <label for="qtRanks" class="wide">Ranks, lowest to highest, separated by commas<input id="qtRanks" type="text" maxlength="200"></label>
+          <label for="qtEnding" class="wide">Message for students who reach the top rank<input id="qtEnding" type="text" maxlength="200"></label>
+        </div>
+        <div class="qt-stops" id="qtStops"></div>
+        <div class="open"><button class="tbtn" id="qtAdd" type="button">Add a lesson</button><button class="tbtn go" type="submit">Save roadmap</button></div>
+      </form>
+      <p class="status" id="questStatus" aria-live="polite"></p>
+    </div>
+  </section>
+
   <section class="resources" aria-labelledby="res-h">
     <h2 id="res-h" class="eyebrow">All resources</h2>
 
@@ -494,13 +657,35 @@ Wei Ling, 2R, https://padlet.com/…"></textarea></label>
     <div class="v-stage" id="vStage"><canvas id="vCanvas"></canvas><img id="vImg" alt="" hidden=""><p class="v-msg" id="vMsg"></p></div>
   </div>
 
+  <div class="levelup" id="levelUp" hidden="" role="status"></div>
+
+  <div class="ending" id="ending" hidden="" role="dialog" aria-modal="true" aria-labelledby="endH">
+    <canvas id="confetti" aria-hidden="true"></canvas>
+    <div class="end-card">
+      <div class="end-ham meme dance" id="endHam" aria-hidden="true"></div>
+      <span class="eyebrow">Quest complete</span>
+      <h2 id="endH">Grandmaster!</h2>
+      <p id="endMsg"></p>
+      <div class="cert">
+        <span class="eyebrow">Certificate of mastery</span>
+        <b id="certName">Your name here</b>
+        <span id="certLine"></span>
+        <span class="cert-meta" id="certMeta"></span>
+        <span class="cert-sign">Ms Leong</span>
+      </div>
+      <label for="certInput">Type your name for your certificate<input id="certInput" type="text" maxlength="30" autocomplete="off"></label>
+      <p class="note">Take a screenshot to keep it, or show Ms Leong.</p>
+      <div class="open"><button class="tbtn" id="endAgain" type="button">Celebrate again</button><button class="tbtn go" id="endClose" type="button">Close</button></div>
+    </div>
+  </div>
+
   <button class="edit-pill" id="editToggle" type="button" aria-pressed="false" hidden="">Edit mode: off</button>
 
   <footer>Made by Ms Leong with Claude. New resources will be added to this page.</footer>
 </div>
 </template>
 <div id="app"></div>
-<script type="application/json" id="hubData">{"slides":[{"id":"mvewbuz5rbn84","week":1,"topic":"branding","note":"","link":"https://drive.google.com/file/d/1sBTbqoIsRTkhR4pzC4GduEI5ojXFrQBN/view","file":{"id":"decba70dad0ce61ae2986960595905fa","name":"T3 W8-9 Brand Lab 2.0.pdf"},"added":1792392690065}],"padlets":[{"id":"mvexngncgridy","name":"Ai Generator Padlet","klass":"1E","url":"https://padlet.com/yongyuleong/sec-1e-ai-generator-bf6w7kttgl5nuh6r"}],"submitLink":"https://docs.google.com/spreadsheets/d/1Bjx4PIYUkweGR3SaPOlMVKzcOlExJrVqYhbHIJCaGD0/edit"}</script>
+<script type="application/json" id="hubData">{"slides":[{"id":"mvewbuz5rbn84","week":1,"topic":"branding","note":"","link":"https://drive.google.com/file/d/1sBTbqoIsRTkhR4pzC4GduEI5ojXFrQBN/view","file":{"id":"decba70dad0ce61ae2986960595905fa","name":"T3 W8-9 Brand Lab 2.0.pdf"},"added":1792392690065}],"padlets":[{"id":"mvexngncgridy","name":"Ai Generator Padlet","klass":"1E","url":"https://padlet.com/yongyuleong/sec-1e-ai-generator-bf6w7kttgl5nuh6r"}],"submitLink":"https://docs.google.com/spreadsheets/d/1Bjx4PIYUkweGR3SaPOlMVKzcOlExJrVqYhbHIJCaGD0/edit","questLink":"https://script.google.com/macros/s/AKfycbxlzufzuDAcY3IC1BcH7JXrRNMdoBKHESbXtj-8yVdzmEhpL-PhOp3QnS5wNctRQHP9ig/exec"}</script>
 <script id="hubMain">/* the page's markup is served inside <template id="pageMarkup"> so the page can rebuild itself when Ms Leong saves */
 document.getElementById('app').appendChild(document.getElementById('pageMarkup').content.cloneNode(true));
 const HEAD_PRE = "<meta charset=\"utf-8\">\n<title>Ms Leong\u2019s Lessons<\/title>\n<meta name=\"claude:viewport-fit-sides\" content=\"cover\">\n<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&display=swap\">\n";
@@ -822,10 +1007,10 @@ async function save(statusEl, change){
   const before = JSON.stringify(DATA);
   change(DATA);
   statusEl.className = 'status'; statusEl.textContent = 'Saving…';
-  try { sessionStorage.setItem('hub:scrollTo', statusEl.id === 'slideStatus' ? 'slides' : 'padletList'); } catch (e) {}
+  try { sessionStorage.setItem('hub:scrollTo', {slideStatus: 'slides', questStatus: 'quest'}[statusEl.id] || 'padletList'); } catch (e) {}
   try { await ART.publish(buildHtml(DATA)); statusEl.textContent = 'Saved. The page is updating…'; }
   catch (e) {
-    DATA = JSON.parse(before); renderSlides(); renderPadlets();
+    DATA = JSON.parse(before); renderSlides(); renderPadlets(); renderQuest(); renderStop();
     const code = e && e.code;
     if (code === 'conflict') statusEl.textContent = 'This page changed somewhere else. It’s reloading with the newest version, so add it again after that.';
     else if (code === 'not_writer' || code === 'not_granted' || code === 'not_declared') { statusEl.textContent = 'Saving isn’t available in this view.'; }
@@ -945,10 +1130,260 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); $('#vPrev').click(); }
 });
 
+/* ---------- Art Quest: a roadmap of lessons students level up along ----------
+   Ms Leong sets the lessons, skills and ranks in edit mode (saved in #hubData as DATA.quest).
+   Each student's ratings live only in their own browser (localStorage), so nobody signs in. */
+const DEFAULT_QUEST = {
+  title: 'Term 4 Art Quest',
+  ranks: ['Apprentice','Newbie','Explorer','Artisan','Master','Grandmaster'],
+  ending: 'You finished every lesson on the roadmap and mastered every skill. Show Ms Leong this screen to claim your Grandmaster title!',
+  current: 'q1',
+  stops: [
+    {id:'q1', week:1, title:'Line and shape', link:'https://claude.ai/artifact/ABQdE9vKFQV4rje99gcDh4', goals:['I can name five kinds of line','I can draw geometric and organic shapes','I can use thick and thin lines to show what matters most']},
+    {id:'q2', week:2, title:'Value and form', link:'', goals:['I can shade with three values: light, middle and dark','I can make a flat shape look 3D','I can shade with hatching or stippling']},
+    {id:'q3', week:3, title:'Colour', link:'', goals:['I can sort colours into warm and cool','I can choose a colour scheme for a mood','I can mix a tint and a shade']},
+    {id:'q4', week:4, title:'Balance and emphasis', link:'https://claude.ai/artifact/ABQdE9vKFQV4rje99gcDh4#compare', goals:['I can tell symmetrical and asymmetrical balance apart','I can create a clear focal point','I can explain why a composition feels still or moving']},
+    {id:'q5', week:5, title:'Final artwork and feedback', link:'https://claude.ai/artifact/MhUpyF11d8AtvkM2Pztx8U', goals:['I can plan an artwork using two elements and one principle','I can give a friend a Feedback Sandwich','I can improve my artwork using feedback']}
+  ]
+};
+const RATE = [['Still learning',5],['Getting there',10],['Got it!',20]];
+const NOTE_XP = 10, QKEY = 'msleong:quest:v1';
+const RANK_COL = ['#9A9DB0','#2E8B57','#6E93BF','#EE7A22','#6A3D9A','#D7322B','#2340B8','#C2547F'];
+const CHECK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5 L10 17 L19 7" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const LOCK = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2" fill="currentColor"/><path d="M8 11 V8 a4 4 0 0 1 8 0 V11" fill="none" stroke="currentColor" stroke-width="2.5"/></svg>';
+const TROPHY = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5 H3 a4 4 0 0 0 4 6 M17 5 H21 a4 4 0 0 1 -4 6" fill="none" stroke="#16182B" stroke-width="1.6"/><path d="M7 3 H17 V9 a5 5 0 0 1 -10 0 Z" fill="#F4C430" stroke="#16182B" stroke-width="1.6"/><path d="M12 14 V18 M8 21 H16 L15 18 H9 Z" fill="#F4C430" stroke="#16182B" stroke-width="1.6" stroke-linejoin="round"/></svg>';
+const HAM_MINI = '<span class="ham" title="You are here"><svg viewBox="0 0 60 52" aria-hidden="true"><circle cx="14" cy="14" r="8" fill="#E8A85C" stroke="#16182B" stroke-width="2.5"/><circle cx="14" cy="14" r="4" fill="#F2A7B5"/><circle cx="46" cy="14" r="8" fill="#E8A85C" stroke="#16182B" stroke-width="2.5"/><circle cx="46" cy="14" r="4" fill="#F2A7B5"/><ellipse cx="30" cy="30" rx="24" ry="20" fill="#E8A85C" stroke="#16182B" stroke-width="2.5"/><ellipse cx="30" cy="37" rx="13" ry="10" fill="#F7E3C4"/><circle cx="22" cy="27" r="2.6" fill="#16182B"/><circle cx="38" cy="27" r="2.6" fill="#16182B"/><ellipse cx="16" cy="34" rx="3.5" ry="2" fill="#F2A7B5"/><ellipse cx="44" cy="34" rx="3.5" ry="2" fill="#F2A7B5"/><path d="M28 31 L32 31 L30 33.5 Z" fill="#E77B8E"/><path d="M26 36 Q30 40 34 36" fill="none" stroke="#16182B" stroke-width="2" stroke-linecap="round"/></svg><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)">You are here</span></span>';
+function badge(i, n){
+  const top = i === n - 1, c = top ? '#F4C430' : RANK_COL[i % RANK_COL.length];
+  return `<svg viewBox="0 0 64 74" aria-hidden="true"><path d="M20 46 L12 70 L23 65 L29 73 L33 50 Z" fill="#D7322B" stroke="#16182B" stroke-width="2" stroke-linejoin="round"/><path d="M44 46 L52 70 L41 65 L35 73 L31 50 Z" fill="#2340B8" stroke="#16182B" stroke-width="2" stroke-linejoin="round"/>
+    <circle cx="32" cy="36" r="22" fill="${c}" stroke="#16182B" stroke-width="3"/><circle cx="32" cy="36" r="15.5" fill="none" stroke="#fff" stroke-width="2" opacity=".7"/>
+    <text x="32" y="42.5" text-anchor="middle" font-family="Bricolage Grotesque, Avenir Next, sans-serif" font-weight="800" font-size="18" fill="#fff" stroke="#16182B" stroke-width="3" paint-order="stroke">${i + 1}</text>
+    ${top ? '<path d="M19 17 L20 3 L27 10 L32 1 L37 10 L44 3 L45 17 Z" fill="#F4C430" stroke="#16182B" stroke-width="2" stroke-linejoin="round"/>' : ''}</svg>`;
+}
+let QP = (() => { try { return JSON.parse(localStorage.getItem(QKEY)) || {}; } catch (e) { return {}; } })();
+QP.r = QP.r || {}; QP.n = QP.n || {};
+function qSave(){ try { localStorage.setItem(QKEY, JSON.stringify(QP)); } catch (e) {} }
+let QSEL = null, qScrolled = false;
+function quest(){
+  const q = DATA.quest && Array.isArray(DATA.quest.stops) && DATA.quest.stops.length ? DATA.quest : DEFAULT_QUEST;
+  const ranks = Array.isArray(q.ranks) && q.ranks.length >= 2 ? q.ranks : DEFAULT_QUEST.ranks;
+  return {...q, ranks, nowIdx: Math.max(0, q.stops.findIndex(s => s.id === q.current))};
+}
+const noteOk = t => String(t || '').trim().length >= 12;
+const stopMax = s => s.goals.length * RATE[2][1] + NOTE_XP;
+function stopXP(s){ const r = QP.r[s.id] || []; return s.goals.reduce((n, g, i) => n + (r[i] ? RATE[r[i] - 1][1] : 0), 0) + (noteOk(QP.n[s.id]) ? NOTE_XP : 0); }
+const stopDone = s => s.goals.every((g, i) => (QP.r[s.id] || [])[i] === 3) && noteOk(QP.n[s.id]);
+/* ranks are spread evenly from 0 XP to every skill mastered, so the top rank means the whole roadmap is done */
+function standing(){
+  const q = quest(), max = q.stops.reduce((n, s) => n + stopMax(s), 0), xp = q.stops.reduce((n, s) => n + stopXP(s), 0), n = q.ranks.length;
+  const thr = q.ranks.map((r, i) => i === n - 1 ? max : Math.round(max * i / (n - 1)));
+  let rank = 0; thr.forEach((t, i) => { if (xp >= t) rank = i; });
+  return {q, xp, max, thr, rank};
+}
+function renderQuest(){
+  /* once the Google Sheet version of Art Quest is set up, this section becomes a link to it */
+  const moved = safeUrl(DATA.questLink);
+  $('#questMoved').hidden = !moved; $('#questForm').hidden = !!moved;
+  [$('#qIntro'), $('#rankCard'), $('#trailWrap'), $('#quest .q-body')].forEach(el => { el.hidden = !!moved; });
+  if (moved){ $('#questMovedLink').href = moved; const mq = $('#menuQuest'); mq.href = moved; mq.target = '_blank'; mq.rel = 'noopener'; $('#quest-h').textContent = 'Art Quest'; return; }
+  const {q, xp, thr, rank} = standing(), n = q.ranks.length;
+  if (!QSEL || !q.stops.some(s => s.id === QSEL)) QSEL = q.stops[q.nowIdx].id;
+  $('#quest-h').textContent = q.title || 'Art Quest';
+  $('#qFirst').textContent = q.ranks[0]; $('#qLast').textContent = q.ranks[n - 1];
+  const allDone = q.stops.every(stopDone);
+  let here = q.stops.findIndex((s, i) => i <= q.nowIdx && !stopDone(s));
+  if (here < 0) here = allDone ? q.stops.length : q.nowIdx;
+  const items = q.stops.map((s, i) => {
+    const locked = i > q.nowIdx, done = stopDone(s), p = stopXP(s) / stopMax(s);
+    const cls = ['stop', done && 'done', locked && 'locked', i === q.nowIdx && 'now', s.id === QSEL && 'sel', i > 0 && stopDone(q.stops[i - 1]) && 'linked'].filter(Boolean).join(' ');
+    const state = done ? 'complete' : locked ? 'coming up' : i === q.nowIdx ? 'this lesson' : 'open';
+    return `<li class="${cls}">${i === here ? HAM_MINI : ''}<button type="button" class="stop-btn" data-stop-id="${esc(s.id)}" aria-pressed="${s.id === QSEL}" aria-label="Week ${esc(s.week)}: ${esc(s.title)}, ${state}">
+      <span class="node" style="--p:${p.toFixed(3)}"><i>${done ? CHECK : locked ? LOCK : i + 1}</i></span><span class="st-wk">Week ${esc(s.week)}</span><b>${esc(s.title)}</b>${i === q.nowIdx ? '<span class="now-chip">This lesson</span>' : ''}</button></li>`;
+  });
+  items.push(`<li class="stop finish${allDone ? ' done linked' : ''}">${here === q.stops.length ? HAM_MINI : ''}<div class="stop-btn"><span class="node"><i>${TROPHY}</i></span><span class="st-wk">Finish</span><b>${esc(q.ranks[n - 1])}</b></div></li>`);
+  $('#trail').innerHTML = items.join('');
+  const next = rank < n - 1 ? rank + 1 : -1, span = next < 0 ? 1 : Math.max(1, thr[next] - thr[rank]), into = next < 0 ? 1 : xp - thr[rank];
+  $('#rankCard').innerHTML = `<div class="rc-badge">${badge(rank, n)}</div><div><span class="eyebrow">Your rank · ${rank + 1} of ${n}</span><strong>${esc(q.ranks[rank])}</strong>
+    <div class="xpbar" role="progressbar" aria-label="XP towards the next rank" aria-valuemin="0" aria-valuemax="${span}" aria-valuenow="${into}"><span style="width:${(into / span * 100).toFixed(1)}%"></span></div>
+    <small>${next < 0 ? `${xp} XP · Top rank reached!` : `${xp} XP · ${thr[next] - xp} XP to ${esc(q.ranks[next])}`}</small></div>`;
+  $('#ladder').innerHTML = q.ranks.map((r, i) => `<li class="${i < rank ? 'got' : i === rank ? 'cur' : ''}">${badge(i, n)}<b>${esc(r)}</b><span>${thr[i]} XP</span></li>`).join('');
+  const skills = q.stops.reduce((c, s) => c + s.goals.filter((g, i) => (QP.r[s.id] || [])[i] === 3).length, 0), total = q.stops.reduce((c, s) => c + s.goals.length, 0);
+  $('#qStats').innerHTML = `<div><b>${skills}/${total}</b><span>skills mastered</span></div><div><b>${q.stops.filter(stopDone).length}/${q.stops.length}</b><span>lessons complete</span></div>`;
+  $('#qReplay').hidden = !QP.ended;
+  if (!qScrolled){ qScrolled = true; const w = $('#trailWrap'), el = $('#trail .sel'); if (el) w.scrollLeft = el.offsetLeft - (w.clientWidth - el.offsetWidth) / 2; }
+}
+function renderStop(){
+  /* nothing to draw once Art Quest has moved to its own app, or before a lesson is picked */
+  if (safeUrl(DATA.questLink) || !quest().stops.some(x => x.id === QSEL)) return;
+  const q = quest(), i = q.stops.findIndex(s => s.id === QSEL), s = q.stops[i], locked = i > q.nowIdx, r = QP.r[s.id] || [];
+  const chips = `<span class="qchip">Week ${esc(s.week)}</span>${i === q.nowIdx ? '<span class="qchip now">This lesson</span>' : ''}${locked ? '<span class="qchip lock">Coming up</span>' : ''}${stopDone(s) ? '<span class="qchip ok">Complete</span>' : ''}`;
+  const goals = s.goals.map((g, gi) => `<li class="goal${r[gi] === 3 ? ' got' : ''}"><p>${esc(g)}</p><div class="rate" role="group" aria-label="How well do you know this skill?">${RATE.map(([label, x], v) =>
+    `<button type="button" data-rate="${gi}" data-v="${v + 1}" aria-pressed="${r[gi] === v + 1}"${locked ? ' disabled' : ''}><span class="dots" aria-hidden="true">${'●'.repeat(v + 1)}</span>${label}<small>+${x} XP</small></button>`).join('')}</div></li>`).join('');
+  $('#stopDetail').innerHTML = `<div class="sd-head"><div class="sd-chips">${chips}</div><h3>${esc(s.title)}</h3>
+      <p>${locked ? 'This lesson unlocks when the class gets to it. Here’s a sneak peek at what you’ll learn.' : 'How well do you know each skill? Be honest: every answer earns XP, and you can change it any time.'}</p></div>
+    <ul class="goals">${goals}</ul>
+    <label class="reflect${noteOk(QP.n[s.id]) ? ' ok' : ''}" for="qNote">One thing I learned in this lesson <small>+${NOTE_XP} XP</small><textarea id="qNote" maxlength="280"${locked ? ' disabled' : ''} placeholder="e.g. Cross-hatching looks darker the more layers I add.">${esc(QP.n[s.id] || '')}</textarea></label>
+    <div class="open sd-foot"><button class="tbtn" type="button" data-go="-1"${i ? '' : ' disabled'}>← Previous lesson</button>${safeUrl(s.link) ? `<a class="btn ghost" href="${esc(s.link)}" target="_blank" rel="noopener">Practise this ↗</a>` : ''}<button class="tbtn" type="button" data-go="1"${i < q.stops.length - 1 ? '' : ' disabled'}>Next lesson →</button></div>`;
+}
+function levelSound(){ [523.3, 659.3, 784, 1046.5].forEach((f, i) => tone(i * .11, i === 3 ? .5 : .2, f, f, .12)); sfx.sparkle(.45); }
+let luTimer = null;
+function showLevelUp(st){
+  const name = st.q.ranks[st.rank], el = $('#levelUp');
+  el.innerHTML = `${badge(st.rank, st.q.ranks.length)}<div><span class="eyebrow">Level up!</span><b>You’re now ${/^[aeiou]/i.test(name) ? 'an' : 'a'} ${esc(name)}</b></div>`;
+  el.hidden = false; el.classList.remove('show'); void el.offsetWidth; el.classList.add('show'); levelSound();
+  clearTimeout(luTimer); luTimer = setTimeout(() => { el.hidden = true; }, 3600);
+}
+function afterChange(prev){
+  const st = standing();
+  if (st.rank <= prev) return;
+  if (st.rank === st.q.ranks.length - 1){ QP.ended = 1; qSave(); renderQuest(); openEnding(); }
+  else showLevelUp(st);
+}
+$('#quest').addEventListener('click', e => {
+  const sb = e.target.closest('[data-stop-id]'), rb = e.target.closest('[data-rate]'), go = e.target.closest('[data-go]');
+  if (sb){ QSEL = sb.dataset.stopId; sfx.tap(0); renderQuest(); renderStop(); return; }
+  if (go && !go.disabled){ const q = quest(), i = q.stops.findIndex(s => s.id === QSEL) + +go.dataset.go; if (q.stops[i]){ QSEL = q.stops[i].id; renderQuest(); renderStop(); $(`#stopDetail [data-go="${go.dataset.go}"]`).focus(); } return; }
+  if (rb && !rb.disabled){
+    const prev = standing().rank, gi = +rb.dataset.rate, v = +rb.dataset.v, r = QP.r[QSEL] = (QP.r[QSEL] || []).slice();
+    r[gi] = v; qSave();
+    if (v === 3) sfx.sparkle(0); else sfx.tap(0);
+    renderQuest(); renderStop(); $(`#stopDetail [data-rate="${gi}"][data-v="${v}"]`).focus();
+    afterChange(prev);
+  }
+});
+document.addEventListener('input', e => {
+  if (e.target.id !== 'qNote') return;
+  const prev = standing().rank;
+  QP.n[QSEL] = e.target.value.slice(0, 280); qSave();
+  e.target.closest('.reflect').classList.toggle('ok', noteOk(QP.n[QSEL]));
+  renderQuest(); afterChange(prev);
+});
+$('#qReset').addEventListener('click', e => {
+  const b = e.currentTarget;
+  if (!b.classList.contains('sure')){ b.classList.add('sure'); b.textContent = 'Tap again to reset'; setTimeout(() => { b.classList.remove('sure'); b.textContent = 'Reset my progress'; }, 3000); return; }
+  b.classList.remove('sure'); b.textContent = 'Reset my progress';
+  QP = {r: {}, n: {}, name: QP.name}; qSave(); renderQuest(); renderStop();
+});
+$('#qReplay').addEventListener('click', () => openEnding());
+
+/* the ending: confetti, a crowned dancing hamster and a certificate */
+let endFrom = null, confettiRun = 0;
+function paintCert(){
+  const {q} = standing(), skills = q.stops.reduce((c, s) => c + s.goals.filter((g, i) => (QP.r[s.id] || [])[i] === 3).length, 0);
+  $('#certName').textContent = (QP.name || '').trim() || 'Your name here';
+  $('#certLine').textContent = `has reached the rank of ${q.ranks[q.ranks.length - 1]} in ${q.title || 'Art Quest'}`;
+  $('#certMeta').textContent = `${skills} skills mastered · ${new Date().toLocaleDateString('en-GB', {day: 'numeric', month: 'long', year: 'numeric'})}`;
+}
+function confetti(){
+  if (reduce) return;
+  const c = $('#confetti'), x = c.getContext('2d'), dpr = Math.min(devicePixelRatio || 1, 2), W = c.width = innerWidth * dpr, H = c.height = innerHeight * dpr;
+  const cols = ['#F4C430','#EC86AE','#2E8B57','#6E93BF','#EE7A22','#B79AE0','#D7322B'];
+  const ps = Array.from({length: 180}, () => ({x: Math.random() * W, y: -Math.random() * H * .7, vx: (Math.random() - .5) * 3 * dpr, vy: (2 + Math.random() * 4) * dpr, r: Math.random() * 6.3, vr: (Math.random() - .5) * .3, s: (7 + Math.random() * 8) * dpr, c: cols[Math.random() * cols.length | 0]}));
+  const t0 = performance.now(); cancelAnimationFrame(confettiRun);
+  const step = now => {
+    x.clearRect(0, 0, W, H);
+    ps.forEach(p => { p.x += p.vx + Math.sin(now / 300 + p.r) * .6; p.y += p.vy; p.r += p.vr; x.save(); x.translate(p.x, p.y); x.rotate(p.r); x.fillStyle = p.c; x.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2); x.restore(); });
+    if (now - t0 < 6500 && !$('#ending').hidden) confettiRun = requestAnimationFrame(step); else x.clearRect(0, 0, W, H);
+  };
+  confettiRun = requestAnimationFrame(step);
+}
+function celebrate(){
+  const h = $('#endHam'); h.classList.remove('dance'); void h.offsetWidth; h.classList.add('dance');
+  confetti(); levelSound(); setTimeout(danceTune, 500);
+}
+function openEnding(){
+  const {q} = standing();
+  if (!$('#endHam').firstChild){
+    const svg = $('#meme svg').cloneNode(true);
+    svg.insertAdjacentHTML('beforeend', '<path d="M56 47 L57 31 L65 39 L72 27 L79 39 L87 31 L88 47 Z" fill="#F4C430" stroke="#16182B" stroke-width="2.5" stroke-linejoin="round"/><circle cx="72" cy="40" r="3" fill="#D7322B"/>');
+    $('#endHam').appendChild(svg);
+  }
+  endFrom = document.activeElement;
+  $('#endH').textContent = q.ranks[q.ranks.length - 1] + '!';
+  $('#endMsg').textContent = q.ending || DEFAULT_QUEST.ending;
+  $('#certInput').value = QP.name || ''; paintCert();
+  $('#ending').hidden = false; document.body.style.overflow = 'hidden'; $('#endClose').focus();
+  celebrate();
+}
+function closeEnding(){ $('#ending').hidden = true; document.body.style.overflow = ''; cancelAnimationFrame(confettiRun); if (endFrom && endFrom.isConnected) endFrom.focus(); }
+$('#endClose').addEventListener('click', closeEnding);
+$('#endAgain').addEventListener('click', celebrate);
+$('#certInput').addEventListener('input', e => { QP.name = e.target.value.slice(0, 30); qSave(); paintCert(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#ending').hidden) closeEnding(); });
+
+/* teacher: edit the roadmap. Changes collect in a draft and are published together with "Save roadmap". */
+let QDRAFT = null;
+function renderQuestEditor(){
+  if (!TEACHER){ QDRAFT = null; $('#qtStops').innerHTML = ''; return; }
+  if (!QDRAFT){
+    const q = quest();
+    QDRAFT = JSON.parse(JSON.stringify({current: q.stops[q.nowIdx].id, stops: q.stops}));
+    $('#qtTitle').value = q.title || ''; $('#qtRanks').value = q.ranks.join(', '); $('#qtEnding').value = q.ending || '';
+  }
+  const S = QDRAFT.stops;
+  $('#qtStops').innerHTML = S.map((s, i) => `<fieldset class="tform qt-stop" data-i="${i}"><legend>Lesson ${i + 1}</legend>
+    <label for="qtw-${esc(s.id)}">Week<input id="qtw-${esc(s.id)}" data-f="week" type="number" min="1" max="60" value="${esc(s.week)}"></label>
+    <label for="qtt-${esc(s.id)}">Lesson title<input id="qtt-${esc(s.id)}" data-f="title" type="text" maxlength="60" value="${esc(s.title)}" placeholder="e.g. Value and form"></label>
+    <label for="qtl-${esc(s.id)}">Link to practise (optional)<input id="qtl-${esc(s.id)}" data-f="link" type="url" value="${esc(s.link || '')}" placeholder="https://…"></label>
+    <label for="qtg-${esc(s.id)}" class="wide">Skills, one per line<textarea id="qtg-${esc(s.id)}" data-f="goals" placeholder="I can …">${esc((Array.isArray(s.goals) ? s.goals : []).join('\n'))}</textarea></label>
+    <div class="qt-row wide"><label class="now-pick" for="qtn-${esc(s.id)}"><input type="radio" name="qtNow" id="qtn-${esc(s.id)}" value="${esc(s.id)}"${QDRAFT.current === s.id ? ' checked' : ''}>The class is on this lesson</label>
+    <button class="rm" type="button" data-qt="up"${i ? '' : ' disabled'}>Move up</button><button class="rm" type="button" data-qt="down"${i < S.length - 1 ? '' : ' disabled'}>Move down</button>${S.length > 1 ? '<button class="rm" type="button" data-qt="rm">Remove</button>' : ''}</div></fieldset>`).join('');
+}
+function draftField(e){
+  const t = e.target, fs = t.closest('.qt-stop');
+  if (!QDRAFT || !fs) return;
+  if (t.name === 'qtNow'){ QDRAFT.current = t.value; return; }
+  const s = QDRAFT.stops[+fs.dataset.i];
+  if (t.dataset.f === 'goals') s.goals = t.value.split('\n'); else if (t.dataset.f) s[t.dataset.f] = t.value;
+}
+$('#questTools').addEventListener('input', draftField);
+$('#questTools').addEventListener('change', draftField);
+$('#questTools').addEventListener('click', e => {
+  const b = e.target.closest('[data-qt]'); if (!b || !QDRAFT) return;
+  const S = QDRAFT.stops, i = +b.closest('.qt-stop').dataset.i, a = b.dataset.qt;
+  if (a === 'rm') return confirmRemove(b, () => { S.splice(i, 1); if (!S.some(s => s.id === QDRAFT.current)) QDRAFT.current = S[0].id; renderQuestEditor(); });
+  const j = a === 'up' ? i - 1 : i + 1;
+  if (!S[j]) return;
+  [S[i], S[j]] = [S[j], S[i]]; renderQuestEditor();
+  $(`.qt-stop[data-i="${j}"] [data-qt="${a}"]`)?.focus();
+});
+$('#qtAdd').addEventListener('click', () => {
+  if (!QDRAFT) return;
+  const S = QDRAFT.stops, st = $('#questStatus');
+  if (S.length >= 20){ st.className = 'status err'; st.textContent = 'The roadmap can have up to 20 lessons.'; return; }
+  const s = {id: newId(), week: S.length ? (parseInt(S[S.length - 1].week, 10) || 0) + 1 : 1, title: '', goals: [], link: ''};
+  S.push(s); renderQuestEditor(); document.getElementById('qtt-' + s.id).focus();
+});
+$('#questLinkForm').addEventListener('submit', e => {
+  e.preventDefault(); if (!TEACHER) return;
+  const st = $('#questStatus'), url = $('#qtLink').value.trim();
+  if (url && !safeUrl(url)){ st.className = 'status err'; st.textContent = 'The link must start with https://'; return; }
+  save(st, d => { d.questLink = safeUrl(url); });
+});
+$('#questForm').addEventListener('submit', e => {
+  e.preventDefault(); if (!TEACHER || !QDRAFT) return;
+  const st = $('#questStatus'), fail = m => { st.className = 'status err'; st.textContent = m; };
+  const ranks = $('#qtRanks').value.split(',').map(x => x.trim().slice(0, 24)).filter(Boolean);
+  if (ranks.length < 2 || ranks.length > 8) return fail('Add between 2 and 8 ranks, separated by commas.');
+  const stops = [];
+  for (const [i, s] of QDRAFT.stops.entries()){
+    const title = String(s.title || '').trim().slice(0, 60), link = String(s.link || '').trim(), week = parseInt(s.week, 10);
+    const goals = (Array.isArray(s.goals) ? s.goals : []).map(g => String(g).trim().slice(0, 120)).filter(Boolean);
+    if (!title) return fail(`Lesson ${i + 1} needs a title.`);
+    if (!goals.length) return fail(`Add at least one skill to “${title}”.`);
+    if (goals.length > 6) return fail(`“${title}” has ${goals.length} skills. Keep it to 6 or fewer.`);
+    if (link && !safeUrl(link)) return fail(`The link for “${title}” must start with https://`);
+    stops.push({id: s.id, week: week > 0 ? Math.min(week, 60) : i + 1, title, goals, link: safeUrl(link)});
+  }
+  const current = stops.some(s => s.id === QDRAFT.current) ? QDRAFT.current : stops[0].id;
+  save(st, d => { d.quest = {title: $('#qtTitle').value.trim().slice(0, 40) || 'Art Quest', ranks, ending: $('#qtEnding').value.trim().slice(0, 200), current, stops}; });
+});
+
 /* edit mode: only people who can edit the page see the switch; it starts off, so a projected page shows the student view */
 function setEditing(on){
   TEACHER = !!(on && CAN_EDIT);
-  $('#slideTools').hidden = !TEACHER; $('#padletTools').hidden = !TEACHER;
+  $('#slideTools').hidden = !TEACHER; $('#padletTools').hidden = !TEACHER; $('#questTools').hidden = !TEACHER;
+  QDRAFT = null; renderQuestEditor();
   const b = $('#editToggle'); b.setAttribute('aria-pressed', TEACHER); b.textContent = TEACHER ? 'Edit mode: on' : 'Edit mode: off';
   try { sessionStorage.setItem('hub:editing', TEACHER ? '1' : '0'); } catch (e) {}
   renderSlides(); renderPadlets();
@@ -964,12 +1399,12 @@ $('#editToggle').addEventListener('click', () => setEditing(!TEACHER));
   if (!canEdit) return;
   ART = art; CAN_EDIT = true;
   try { ASSETS = await cl.use('assets'); } catch (e) {}
-  $('#pBoard').value = DATA.submitLink || '';
+  $('#pBoard').value = DATA.submitLink || ''; $('#qtLink').value = DATA.questLink || '';
   $('#editToggle').hidden = false;
   let on = false; try { on = sessionStorage.getItem('hub:editing') === '1'; } catch (e) {}
   setEditing(on);
   renderSlides(); renderPadlets();
 })();
-renderSlides(); renderPadlets();
+renderSlides(); renderPadlets(); renderQuest(); renderStop();
 try { const to = sessionStorage.getItem('hub:scrollTo'); if (to){ sessionStorage.removeItem('hub:scrollTo'); setTimeout(() => document.getElementById(to)?.scrollIntoView(), 60); } } catch (e) {}
 </script></body></html>
